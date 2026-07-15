@@ -1,0 +1,15 @@
+============================================================
+VISUALIZATION REPORT
+============================================================
+
+Rows Analysed : 99441
+Columns       : 6
+
+Charts Generated
+-----------------------------
+1. Orders by State
+2. Top 10 Cities
+3. Order Status Distribution
+4. Monthly Orders
+5. Orders by Year
+6. Top States Pie Chart

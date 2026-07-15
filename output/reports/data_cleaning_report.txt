@@ -1,0 +1,27 @@
+=================================================================
+DATA CLEANING REPORT
+=================================================================
+
+Input File : E:\Masai-Data-Analytics-Capstone\Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit\output\reports\orders_customers_join.csv
+Output File: E:\Masai-Data-Analytics-Capstone\Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit\data\cleaned\cleaned_orders.csv
+
+Rows Before Cleaning : 99441
+Rows After Cleaning  : 99441
+Duplicate Rows Removed: 0
+
+Missing Values
+-----------------------------------------------------------------
+                          Missing Values  Percentage (%)
+customer_id                            0             0.0
+customer_city                          0             0.0
+customer_state                         0             0.0
+order_id                               0             0.0
+order_status                           0             0.0
+order_purchase_timestamp               0             0.0
+
+Treatment Applied
+-----------------------------------------------------------------
+✓ Checked missing values
+✓ Filled missing values (if any)
+✓ Removed duplicate rows
+✓ Saved cleaned dataset

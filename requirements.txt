@@ -1,0 +1,13 @@
+# Core Data Processing
+pandas==2.3.3
+numpy==1.26.4
+
+# Database Connectivity
+SQLAlchemy==2.0.51
+PyMySQL==1.2.0
+
+# Data Visualization
+matplotlib==3.10.6
+
+# Statistical Analysis
+scipy==1.16.1

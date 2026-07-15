@@ -1,0 +1,22 @@
+=================================================================
+OUTLIER ANALYSIS REPORT
+=================================================================
+
+Dataset : order_items
+
+IQR METHOD
+-----------------------------------------------------------------
+price                8427
+freight_value        12134
+
+Z-SCORE METHOD
+-----------------------------------------------------------------
+price                1966
+freight_value        2041
+
+Observation
+-----------------------------------------------------------------
+• IQR detected more outliers.
+• Z-Score detected fewer outliers.
+• IQR is more suitable for skewed distributions.
+• Z-Score works better for approximately normal distributions.
