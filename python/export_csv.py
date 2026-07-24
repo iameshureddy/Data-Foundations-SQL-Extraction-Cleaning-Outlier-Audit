@@ -5,88 +5,123 @@ Course  : Data Analytics with Gen & Agentic AI
 Capstone: Part 1
 
 File    : export_csv.py
+Task    : Task 6 - Export JOIN Result to CSV
 
-Description:
-Exports the Task 4 INNER JOIN result from MySQL into a CSV file
-for further cleaning and outlier analysis.
+Objective:
+Export the Task 4 JOIN result from MySQL into a CSV file. The exported dataset
+will be used for:
+
+1. Task 7 - Data Cleaning
+2. Task 8 - Outlier Detection
 
 Author  : Bhuvaneswari Yennapusala
 ===============================================================================
 """
+
+# =============================================================================
+# IMPORT REQUIRED LIBRARIES
+# =============================================================================
 
 import os
 import pandas as pd
 from sqlalchemy import create_engine
 
 # =============================================================================
-# Database Configuration
+# DATABASE CONFIGURATION
 # =============================================================================
 
 HOST = "localhost"
 PORT = 3306
 USER = "root"
-PASSWORD = ""          # Default XAMPP password is blank
+PASSWORD = ""          # XAMPP default password
 DATABASE = "smartcommerce_analytics"
 
 # =============================================================================
-# Create MySQL Connection
+# CREATE DATABASE CONNECTION
 # =============================================================================
 
-engine = create_engine(
-    f"mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
-)
+print("=" * 70)
+print("Connecting to MySQL Database...")
+print("=" * 70)
 
-# =============================================================================
-# SQL Query (Task 4 INNER JOIN)
-# =============================================================================
+try:
+    engine = create_engine(
+        f"mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+    )
 
-query = """
-SELECT
-    c.customer_id,
-    c.customer_city,
-    c.customer_state,
-    o.order_id,
-    o.order_status,
-    o.order_purchase_timestamp
-FROM customers AS c
-INNER JOIN orders AS o
-ON c.customer_id = o.customer_id;
-"""
+    # =========================================================================
+    # TASK 4 JOIN QUERY
+    # =========================================================================
+    # Purpose:
+    # Export customer and order information for further preprocessing.
+    #
+    # INNER JOIN is used because only customers with matching orders are
+    # required for cleaning and outlier analysis.
+    # =========================================================================
 
-# =============================================================================
-# Read Data from MySQL
-# =============================================================================
+    query = """
+    SELECT
+        c.customer_id,
+        c.customer_city,
+        c.customer_state,
+        o.order_id,
+        o.order_status,
+        o.order_purchase_timestamp
+    FROM customers AS c
+    INNER JOIN orders AS o
+           ON c.customer_id = o.customer_id;
+    """
 
-print("Connecting to MySQL...")
-df = pd.read_sql(query, engine)
+    # =========================================================================
+    # READ DATA FROM MYSQL
+    # =========================================================================
 
-# =============================================================================
-# Create Output Folder Automatically
-# =============================================================================
+    df = pd.read_sql(query, engine)
 
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # =========================================================================
+    # CREATE OUTPUT DIRECTORY
+    # =========================================================================
 
-output_folder = os.path.join(project_root, "output", "reports")
+    project_root = os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))
+    )
 
-os.makedirs(output_folder, exist_ok=True)
+    output_folder = os.path.join(project_root, "output", "reports")
 
-# =============================================================================
-# Export CSV
-# =============================================================================
+    os.makedirs(output_folder, exist_ok=True)
 
-output_file = os.path.join(output_folder, "orders_customers_join.csv")
+    # =========================================================================
+    # EXPORT CSV
+    # =========================================================================
 
-df.to_csv(output_file, index=False)
+    output_file = os.path.join(
+        output_folder,
+        "orders_customers_join.csv"
+    )
 
-# =============================================================================
-# Success Message
-# =============================================================================
+    df.to_csv(output_file, index=False)
 
-print("\n" + "=" * 65)
-print("CSV EXPORTED SUCCESSFULLY")
-print("=" * 65)
-print(f"Rows Exported   : {len(df)}")
-print(f"Columns Exported: {len(df.columns)}")
-print(f"Output Folder   : {output_folder}")
-print(f"CSV File        : {output_file}")
-print("=" * 65)
+    # =========================================================================
+    # EXPORT SUMMARY
+    # =========================================================================
+
+    print("\n" + "=" * 70)
+    print("TASK 6 COMPLETED SUCCESSFULLY")
+    print("=" * 70)
+    print(f"Rows Exported      : {len(df)}")
+    print(f"Columns Exported   : {len(df.columns)}")
+    print(f"CSV Location       : {output_file}")
+    print("=" * 70)
+
+except Exception as error:
+    print("\nERROR OCCURRED")
+    print("-" * 70)
+    print(error)
+    print("-" * 70)
+
+finally:
+    try:
+        engine.dispose()
+    except Exception:
+        pass
+    
