@@ -22,7 +22,7 @@ The project has been developed according to the requirements specified in the **
 
 # Dataset
 
-**Dataset Name:** Olist Brazilian E-Commerce Public Dataset
+**Dataset Used:** Olist Brazilian E-Commerce Public Dataset
 
 The Olist dataset is a publicly available relational e-commerce dataset containing information about customers, orders, products, payments, and customer reviews. It is widely used for learning SQL, data analysis, and database management concepts.
 
