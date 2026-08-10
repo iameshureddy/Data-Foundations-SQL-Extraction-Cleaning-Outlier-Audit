@@ -435,10 +435,11 @@ This demonstrates how the JOIN type is selected according to the analysis requir
 
 Task 5 checks the relational integrity between the `customers` and `orders` tables.
 
-The relationship is:
+```markdown
+The foreign-key relationship is:
 
 ```text
-One Customer → One Order in this dataset
+orders.customer_id → customers.customer_id
 ```
 
 The foreign-key relationship is:
