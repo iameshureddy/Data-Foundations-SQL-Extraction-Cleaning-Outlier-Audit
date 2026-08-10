@@ -596,10 +596,10 @@ The strategy is included in the code so that the cleaning process can handle mis
 Observed result:
 
 ```text
-Rows before cleaning  : 99,441
-Rows after cleaning   : 99,441
-Duplicate rows removed: 0
-Duplicate rows after removal: 0
+Rows before cleaning           : 99,441
+Rows after cleaning            : 99,441
+Duplicate rows removed         : 0
+Duplicate rows after removal   : 0
 ```
 
 ### Final cleaned dataset
@@ -629,25 +629,20 @@ output/reports/outlier_analysis_report.txt
 
 The outlier audit is performed on continuous numeric business measures from the `order_items` table.
 
-### Continuous Numeric Measure Filtering Rule
+## 13.1 Continuous Numeric Measure Filtering Rule
 
 Only continuous numeric business measures are included in the outlier audit.
 
-Identifier and key columns are not treated as measurements because their numeric values represent labels or identifiers. Binary/flag columns and zero or near-zero variance columns are also not considered meaningful continuous measures.
+Identifier and key columns are excluded because their numeric values represent labels rather than measurements. Binary or flag columns and zero or near-zero variance columns are also excluded because they are not meaningful continuous measures.
 
-After applying the filtering logic, the selected continuous numeric measures are:
-
-```text
-price
-freight_value
-```
-
-### Selected Measures
+The selected continuous numeric measures are:
 
 - `price`
 - `freight_value`
 
-### Rows Analysed
+The analysis is performed directly on the MySQL `order_items` table because the CSV exported for Task 6 contains customer and order fields but does not contain `price` or `freight_value`.
+
+### Rows analysed
 
 ```text
 112,650
@@ -657,7 +652,7 @@ freight_value
 
 # 14. IQR Method
 
-The project uses the following formula:
+The Interquartile Range method uses:
 
 ```text
 IQR = Q3 - Q1
@@ -907,7 +902,7 @@ python python/generate_visualizations.py
 
 # 21. Part 1 Acceptance Criteria
 
-The following checklist maps the Part 1 requirements to the files, reports, and outputs in the repository.
+The following table maps the Part 1 requirements to the files, reports, and outputs in the repository.
 
 | Acceptance criterion | Evidence in project | Status |
 |---|---|---|
@@ -946,16 +941,16 @@ The checklist is included as a quick reference. The SQL files, Python scripts, a
 ## Database and JOIN
 
 ```text
-Database  : smartcommerce_analytics
-JOIN rows : 99,441
+Database    : smartcommerce_analytics
+JOIN rows   : 99,441
 JOIN columns: 6
 ```
 
 ## Referential Integrity
 
 ```text
-Matching customers       : 99,441
-Customers with >1 order  : 0 rows
+Matching customers      : 99,441
+Customers with >1 order : 0 rows
 Orphan orders            : 0 rows
 ```
 
