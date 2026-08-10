@@ -1,9 +1,9 @@
 # Data Foundations: SQL Extraction, Cleaning & Outlier Audit
 
-**Course:** Data Analytics with Gen & Agentic AI  
-**Capstone:** Part 1  
-**Author:** Bhuvaneswari Yennapusala  
-**Database:** MySQL/MariaDB through XAMPP and phpMyAdmin  
+**Course:** Data Analytics with Gen & Agentic AI
+**Capstone:** Part 1
+**Author:** Bhuvaneswari Yennapusala
+**Database:** MySQL/MariaDB through XAMPP and phpMyAdmin
 **Repository:** https://github.com/iameshureddy/Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
 
 ---
