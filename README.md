@@ -6,11 +6,15 @@
 **Database:** MySQL through XAMPP / phpMyAdmin  
 **Dataset:** Olist Brazilian E-Commerce Dataset
 
+> **Part 1 Status:** Complete  
+> **Focus:** SQL extraction, relational integrity, Pandas cleaning, and outlier auditing
+
+
 ---
 
 ## 1. Project Overview
 
-This project covers **Part 1 – Data Foundations: SQL Extraction, Cleaning & Outlier Audit**.
+This project covers ****Part 1 – Data Foundations: SQL Extraction, Cleaning & Outlier Audit****.
 
 The project starts with the Olist Brazilian E-Commerce Dataset and loads the data into a relational MySQL database. SQL is used for filtering, aggregation, JOIN operations, and referential-integrity checks. A customer-order JOIN result is exported to CSV and processed using Python and Pandas. The final stage performs outlier analysis on continuous numeric business measures using both IQR and Z-score methods.
 
@@ -136,7 +140,7 @@ Database name:
 smartcommerce_analytics
 ```
 
-The database is created and managed locally using **XAMPP MySQL and phpMyAdmin**.
+The database is created and managed locally using ****XAMPP MySQL and phpMyAdmin****.
 
 The schema uses primary keys and foreign-key relationships.
 
@@ -235,18 +239,18 @@ WHERE order_status IN ('delivered','shipped');
 
 ## 7.2 WHERE ... NOT IN
 
-The project uses `NOT IN` to exclude selected product categories.
+The project uses `NOT IN` to exclude selected order statuses.
 
 ```sql
 SELECT
-    product_id,
-    product_category_name
-FROM products
-WHERE product_category_name NOT IN
+    order_id,
+    customer_id,
+    order_status
+FROM orders
+WHERE order_status NOT IN
 (
-    'bed_bath_table',
-    'health_beauty',
-    'sports_leisure'
+    'cancelled',
+    'unavailable'
 );
 ```
 
@@ -408,7 +412,7 @@ The query returns:
 
 The `LEFT JOIN` retrieves every customer, including customers who do not have a matching order.
 
-The `customers` table is the **left table** because the objective is to retain every customer record. If a customer has no matching order, the order-related columns contain `NULL`.
+The `customers` table is the ****left table**** because the objective is to retain every customer record. If a customer has no matching order, the order-related columns contain `NULL`.
 
 The query returns:
 
@@ -420,8 +424,8 @@ The query returns:
 
 ## 9.3 Why are both JOINs used?
 
-- **INNER JOIN:** retrieves only customers with matching orders.
-- **LEFT JOIN:** retains all customers and includes order details when a match exists.
+- ****INNER JOIN:**** retrieves only customers with matching orders.
+- ****LEFT JOIN:**** retains all customers and includes order details when a match exists.
 
 This demonstrates how the JOIN type is selected according to the analysis requirement.
 
@@ -446,6 +450,8 @@ orders.customer_id → customers.customer_id
 ```
 
 The `customers` table is the parent table and the `orders` table is the child table.
+
+For the `customer_id` key used in this schema, the grouped child-count check returned **0 rows**, meaning no `customer_id` has more than one order in this dataset. Therefore, the **observed relationship is 1:1 for this key in this dataset**.
 
 Three integrity checks are performed.
 
@@ -977,7 +983,7 @@ freight_value
 
 ---
 
-**# 23. Reproducibility and Implementation Notes
+# 23. Reproducibility and Implementation Notes
 
 - The SQL schema, import scripts, query tasks, JOINs, and integrity checks are stored separately by task.
 - Python scripts are executed from the project root so their relative input/output paths resolve consistently.
@@ -988,7 +994,7 @@ freight_value
 
 ---
 
-# 24. Conclusion**
+# 24. Conclusion
 
 The project follows the Part 1 workflow from relational database creation to data-quality analysis:
 
@@ -1018,10 +1024,3 @@ The implementation demonstrates SQL-based data extraction and validation togethe
 
 ---
 
-## Submission
-
-Submit the public GitHub repository for Part 1:
-
-https://github.com/iameshureddy/Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
-
-The repository contains the SQL scripts, Python scripts, exported CSV, cleaned dataset, reports, visualizations, requirements file, and this README.
