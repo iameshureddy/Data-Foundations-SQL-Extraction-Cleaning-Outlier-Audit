@@ -1,16 +1,27 @@
-=================================================================
+======================================================================
 DATA CLEANING REPORT
-=================================================================
+======================================================================
 
+PROJECT INFORMATION
+----------------------------------------------------------------------
+Project: Data Foundations: SQL Extraction, Cleaning & Outlier Audit
+Task: Task 7 - Data Cleaning
+Dataset: Olist Brazilian E-Commerce Dataset
+
+FILE INFORMATION
+----------------------------------------------------------------------
 Input File : E:\Masai-Data-Analytics-Capstone\Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit\output\reports\orders_customers_join.csv
 Output File: E:\Masai-Data-Analytics-Capstone\Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit\data\cleaned\cleaned_orders.csv
 
+DATASET SIZE
+----------------------------------------------------------------------
 Rows Before Cleaning : 99441
 Rows After Cleaning  : 99441
+Columns              : 6
 Duplicate Rows Removed: 0
 
-Missing Values
------------------------------------------------------------------
+MISSING VALUES - BEFORE CLEANING
+----------------------------------------------------------------------
                           Missing Values  Percentage (%)
 customer_id                            0             0.0
 customer_city                          0             0.0
@@ -19,9 +30,48 @@ order_id                               0             0.0
 order_status                           0             0.0
 order_purchase_timestamp               0             0.0
 
-Treatment Applied
------------------------------------------------------------------
-✓ Checked missing values
-✓ Filled missing values (if any)
-✓ Removed duplicate rows
-✓ Saved cleaned dataset
+MISSING VALUES - AFTER CLEANING
+----------------------------------------------------------------------
+                          Missing Values  Percentage (%)
+customer_id                            0             0.0
+customer_city                          0             0.0
+customer_state                         0             0.0
+order_id                               0             0.0
+order_status                           0             0.0
+order_purchase_timestamp               0             0.0
+
+Total Missing Values After Cleaning: 0
+
+DUPLICATE ROW AUDIT
+----------------------------------------------------------------------
+Duplicate Rows Before Removal: 0
+Duplicate Rows After Removal : 0
+Duplicate Rows Removed       : 0
+
+MISSING VALUE TREATMENT
+----------------------------------------------------------------------
+- customer_id: No missing values. No imputation required.
+- customer_city: No missing values. No imputation required.
+- customer_state: No missing values. No imputation required.
+- order_id: No missing values. No imputation required.
+- order_status: No missing values. No imputation required.
+- order_purchase_timestamp: No missing values. No imputation required.
+
+IMPUTATION STRATEGY JUSTIFICATION
+----------------------------------------------------------------------
+Numeric columns use median imputation because the median is less sensitive to extreme values and is therefore more robust when numerical data may contain outliers.
+
+Categorical columns use mode imputation because the mode represents the most frequently occurring category and preserves the existing categorical distribution. If no valid mode exists, the value 'unknown' is used.
+
+Duplicate rows are identified and removed using Pandas drop_duplicates() so that repeated records do not affect subsequent statistical analysis and outlier detection.
+
+FINAL VALIDATION
+----------------------------------------------------------------------
+Final Missing Values : 0
+Final Duplicate Rows : 0
+Missing-value validation: PASS
+Duplicate validation: PASS
+
+======================================================================
+END OF DATA CLEANING REPORT
+======================================================================

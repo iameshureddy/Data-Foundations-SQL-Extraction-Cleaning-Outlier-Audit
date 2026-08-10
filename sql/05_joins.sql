@@ -1,47 +1,43 @@
+/*
+Project : Data Foundations: SQL Extraction, Cleaning & Outlier Audit
+Course  : Data Analytics with Gen & Agentic AI
+Capstone: Part 1
+
+File    : 05_joins.sql
+
+Description:
+This file demonstrates INNER JOIN and LEFT JOIN operations
+between the customers and orders tables.
+
+Database : smartcommerce_analytics
+Dataset  : Olist Brazilian E-Commerce Dataset
+
+Task    : Task 4 - JOIN Operations
+
+Relationship:
+One Customer --> Many Orders (1:M)
+
+Foreign Key:
+orders.customer_id references customers.customer_id
+
+Author  : Bhuvaneswari Yennapusala
+*/
+
+USE smartcommerce_analytics;
+
+
 -- ============================================================================
--- FILE: 05_joins.sql
--- PROJECT: Data Foundations – SQL Extraction, Cleaning & Outlier Audit
--- TASK 4: Demonstrating INNER JOIN and LEFT JOIN
---
+-- TASK 4A: INNER JOIN
+-- ============================================================================
 -- Purpose:
--- This file demonstrates two different SQL JOIN operations between the
--- 'customers' and 'orders' tables.
---
--- Tables Used:
---   1. customers
---   2. orders
---
--- Relationship:
---   One Customer --> Many Orders (1:M)
---
--- Foreign Key:
---   orders.customer_id references customers.customer_id
---
--- Why this task?
---   The rubric requires demonstrating both INNER JOIN and LEFT JOIN,
---   along with explaining why each join is used.
--- ============================================================================
-
-
-
--- ============================================================================
--- TASK 4A : INNER JOIN
--- ============================================================================
---
--- Purpose:
--- Retrieve only customers who have placed at least one order.
+-- Retrieve customers who have at least one matching order.
 --
 -- Why INNER JOIN?
--- INNER JOIN returns only those rows where a matching customer_id exists
--- in both the customers and orders tables.
+-- INNER JOIN returns only records where customer_id exists in both
+-- customers and orders.
 --
--- Use Case:
--- Useful for analysing completed customer transactions because only
--- customers with existing orders are included.
---
--- Expected Output:
--- Customer information together with corresponding order details.
--- Customers without orders are excluded.
+-- Result:
+-- Customers without matching orders are excluded.
 -- ============================================================================
 
 SELECT
@@ -52,33 +48,27 @@ SELECT
     o.order_status
 FROM customers AS c
 INNER JOIN orders AS o
-       ON c.customer_id = o.customer_id
+    ON c.customer_id = o.customer_id
 ORDER BY
-       o.order_id ASC;
-
+    o.order_id ASC;
 
 
 -- ============================================================================
--- TASK 4B : LEFT JOIN
+-- TASK 4B: LEFT JOIN
 -- ============================================================================
---
 -- Purpose:
--- Retrieve every customer, regardless of whether they have placed an order.
+-- Retrieve every customer, including customers who have no matching order.
 --
 -- Why LEFT JOIN?
--- The customers table is placed on the LEFT because we want to retain
--- every customer record in the final result.
+-- The customers table is placed on the LEFT side because the objective
+-- is to retain every customer record.
 --
--- If a customer has not placed any order,
--- the order columns will contain NULL values.
+-- If a customer has no matching order, the order-related columns
+-- will contain NULL values.
 --
--- Use Case:
--- Helps identify customers who have never placed an order and supports
--- customer retention analysis.
---
--- Expected Output:
--- All customers appear in the result.
--- Order details appear only where matching records exist.
+-- Result:
+-- All customers are retained, while matching order information is
+-- included when available.
 -- ============================================================================
 
 SELECT
@@ -89,7 +79,7 @@ SELECT
     o.order_status
 FROM customers AS c
 LEFT JOIN orders AS o
-       ON c.customer_id = o.customer_id
+    ON c.customer_id = o.customer_id
 ORDER BY
-       c.customer_state ASC,
-       c.customer_city ASC;
+    c.customer_state ASC,
+    c.customer_city ASC;

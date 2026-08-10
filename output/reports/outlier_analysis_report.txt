@@ -1,22 +1,85 @@
-=================================================================
+======================================================================
 OUTLIER ANALYSIS REPORT
-=================================================================
+======================================================================
 
-Dataset : order_items
+Project: Data Foundations: SQL Extraction, Cleaning & Outlier Audit
+Task: Task 8 - Outlier Audit
+Dataset/Table: order_items
+
+CONTINUOUS NUMERIC MEASURE FILTERING RULE
+----------------------------------------------------------------------
+Only continuous numeric business measures are included in the outlier audit.
+Identifier/key columns are excluded because their numeric values represent labels rather than measurements.
+Binary/flag columns and zero/near-zero variance columns are also excluded because they are not meaningful continuous measures.
+
+SELECTED CONTINUOUS NUMERIC MEASURES
+----------------------------------------------------------------------
+- price
+- freight_value
+
+EXCLUDED COLUMNS
+----------------------------------------------------------------------
+No columns were excluded.
 
 IQR METHOD
------------------------------------------------------------------
-price                8427
-freight_value        12134
+----------------------------------------------------------------------
+Rule: Outliers are values below Q1 - 1.5*IQR or above Q3 + 1.5*IQR.
+
+Column: price
+Q1          : 39.900000
+Q3          : 134.900000
+IQR         : 95.000000
+Lower Fence : -102.600000
+Upper Fence : 277.400000
+Outliers    : 8427
+
+Column: freight_value
+Q1          : 13.080000
+Q3          : 21.150000
+IQR         : 8.070000
+Lower Fence : 0.975000
+Upper Fence : 33.255000
+Outliers    : 12134
 
 Z-SCORE METHOD
------------------------------------------------------------------
-price                1966
-freight_value        2041
+----------------------------------------------------------------------
+Rule: Values with absolute Z-score greater than 3 are classified as outliers.
 
-Observation
------------------------------------------------------------------
-• IQR detected more outliers.
-• Z-Score detected fewer outliers.
-• IQR is more suitable for skewed distributions.
-• Z-Score works better for approximately normal distributions.
+Column: price
+Mean        : 120.653739
+Std Dev     : 183.633928
+Z Threshold : 3
+Outliers    : 1966
+
+Column: freight_value
+Mean        : 19.990320
+Std Dev     : 15.806405
+Z Threshold : 3
+Outliers    : 2041
+
+IQR VS Z-SCORE COMPARISON
+----------------------------------------------------------------------
+Column: price
+IQR Outliers     : 8427
+Z-score Outliers : 1966
+Difference       : 6461
+Result           : Disagree
+
+Column: freight_value
+IQR Outliers     : 12134
+Z-score Outliers : 2041
+Difference       : 10093
+Result           : Disagree
+
+METHOD DIFFERENCE EXPLANATION
+----------------------------------------------------------------------
+IQR is distribution-free and is generally more robust to skewed data and extreme values, whereas Z-score relies on the mean and standard deviation and is most appropriate when the distribution is approximately normal. Therefore, the two methods can identify different observations when the data are skewed or contain extreme values.
+
+FINAL SUMMARY
+----------------------------------------------------------------------
+price: IQR=8427, Z-score=1966, Disagree
+freight_value: IQR=12134, Z-score=2041, Disagree
+
+======================================================================
+END OF OUTLIER ANALYSIS REPORT
+======================================================================

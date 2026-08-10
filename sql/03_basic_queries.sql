@@ -34,23 +34,21 @@ WHERE order_status IN ('delivered','shipped');
 
 
 -- ============================================================================
--- Query 2
--- WHERE ... NOT IN
--- Find products NOT belonging to selected categories
+-- Query 2: WHERE ... NOT IN
+-- Find orders whose status is not cancelled or unavailable
+-- Uses the SAME column as Query 1: order_status
 -- ============================================================================
 
 SELECT
-    product_id,
-    product_category_name
-FROM products
-WHERE product_category_name NOT IN
+    order_id,
+    customer_id,
+    order_status
+FROM orders
+WHERE order_status NOT IN
 (
-'bed_bath_table',
-'health_beauty',
-'sports_leisure'
+    'cancelled',
+    'unavailable'
 );
-
-
 
 -- ============================================================================
 -- Query 3
@@ -64,11 +62,8 @@ SELECT
     order_purchase_timestamp
 FROM orders
 WHERE order_purchase_timestamp
-BETWEEN
-'2018-01-01'
-AND
-'2018-12-31';
-
+BETWEEN '2018-01-01 00:00:00'
+AND '2018-12-31 23:59:59';
 
 
 -- ============================================================================

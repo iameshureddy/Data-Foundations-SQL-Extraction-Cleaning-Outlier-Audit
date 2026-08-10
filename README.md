@@ -1,598 +1,486 @@
-# Data Foundations: SQL Extraction, Cleaning & Outlier Audit
+**\# Data Foundations: SQL Extraction, Cleaning & Outlier Audit**
 
-**Capstone Project – Part 1**
+**\*\*Capstone Project -- Part 1\*\***
 
-**Student Name:** Bhuvaneswari Yennapusala
+**\*\*Student Name:\*\*** Bhuvaneswari Yennapusala
 
-**Program:** Data Analytics with Gen & Agentic AI
+**\*\*Program:\*\*** Data Analytics with Gen & Agentic AI
 
-**Organization:** Masai School
+**\*\*Organization:\*\*** Masai School
 
----
+**---**
 
-# Project Overview
+**\# Project Overview**
 
-This project demonstrates the end-to-end process of extracting, validating, cleaning, and analyzing data using SQL and Python.
+This project demonstrates the end-to-end process of extracting,
+validating, cleaning, and analyzing data using SQL and Python.
 
-A relational database is created using the Olist Brazilian E-Commerce dataset. SQL is used to perform data extraction, filtering, aggregation, JOIN operations, and referential integrity validation. The extracted data is exported to CSV and further processed using Python for data cleaning and statistical outlier detection.
+A relational database is created using the Olist Brazilian E-Commerce
+dataset. SQL is used to perform data extraction, filtering, aggregation,
+JOIN operations, and referential integrity validation. The extracted
+data is exported to CSV and further processed using Python for data
+cleaning and statistical outlier detection.
 
-The project has been developed according to the requirements specified in the **Data Foundations: SQL Extraction, Cleaning & Outlier Audit (Part 1)** assessment.
+The project has been developed according to the requirements specified
+in the **\*\*Data Foundations: SQL Extraction, Cleaning & Outlier Audit
+(Part 1)\*\*** assessment.
 
----
+**---**
 
-# Dataset
+**\# Dataset**
 
-**Dataset Used:** Olist Brazilian E-Commerce Public Dataset
+**\*\*Dataset Name:\*\*** Olist Brazilian E-Commerce Public Dataset
 
-The Olist dataset is a publicly available relational e-commerce dataset containing information about customers, orders, products, payments, and customer reviews. It is widely used for learning SQL, data analysis, and database management concepts.
+The Olist dataset is a publicly available relational e-commerce dataset
+containing information about customers, orders, products, payments, and
+customer reviews. It is widely used for learning SQL, data analysis, and
+database management concepts.
 
-## Tables Used
+**\## Tables Used**
 
-| Table Name | Description |
-|------------|-------------|
-| customers | Customer information |
-| orders | Order details |
-| products | Product information |
-| order_items | Products included in each order |
-| payments | Payment details |
-| reviews | Customer review information |
+\| Table Name \| Description \| \|------------\|-------------\| \|
+customers \| Customer information \| \| orders \| Order details \| \|
+products \| Product information \| \| order_items \| Products included
+in each order \| \| payments \| Payment details \| \| reviews \|
+Customer review information \|
 
----
+**---**
 
-# Technology Stack
+**\# Technology Stack**
 
-| Technology | Purpose |
-|------------|---------|
-| MySQL / MariaDB | Database Management |
-| SQL | Data Extraction & Querying |
-| Python | Data Cleaning & Outlier Analysis |
-| Pandas | Data Manipulation |
-| NumPy | Numerical Computation |
-| Matplotlib | Data Visualization |
-| Git & GitHub | Version Control |
-| Visual Studio Code | Development Environment |
+\| Technology \| Purpose \| \|------------\|---------\| \| MySQL /
+MariaDB \| Database Management \| \| SQL \| Data Extraction & Querying
+\| \| Python \| Data Cleaning & Outlier Analysis \| \| Pandas \| Data
+Manipulation \| \| NumPy \| Numerical Computation \| \| Matplotlib \|
+Data Visualization \| \| Git & GitHub \| Version Control \| \| Visual
+Studio Code \| Development Environment \|
 
----
+**---**
 
-# Project Structure
+**\# Project Structure**
 
-```text
-Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit/
+\`\`\`text Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit/
 
-├── database/
-│   ├── 01_schema.sql
-│   └── 02_import_data.sql
-│
-├── sql/
-│   ├── 03_basic_queries.sql
-│   ├── 04_groupby_having.sql
-│   ├── 05_joins.sql
-│   └── 06_integrity_checks.sql
-│
-├── python/
-│   ├── config.py
-│   ├── export_csv.py
-│   ├── data_cleaning.py
-│   ├── outlier_analysis.py
-│   └── generate_visualizations.py
-│
-├── data/
-│   ├── raw/
-│   └── cleaned/
-│
-├── output/
-│   │
-│   ├── reports/
-│   └── visualizations/
-│
-├── images/
-│
-├── requirements.txt
-├── LICENSE
-├── README.md
-└── .gitignore
-```
+├── database/ │   ├── 01_schema.sql │   └── 02_import_data.sql │ ├──
+sql/ │   ├── 03_basic_queries.sql │   ├── 04_groupby_having.sql │   ├──
+05_joins.sql │   └── 06_integrity_checks.sql │ ├── python/ │   ├──
+config.py │   ├── export_csv.py │   ├── data_cleaning.py │   ├──
+outlier_analysis.py │   └── generate_visualizations.py │ ├── data/ │  
+├── raw/ │   └── cleaned/ │ ├── output/ │   │ │   ├── reports/ │   └──
+visualizations/ │ ├── images/ │ ├── requirements.txt ├── LICENSE ├──
+README.md └── .gitignore \`\`\`
 
----
+**---**
 
-# Project Workflow
+**\# Project Workflow**
 
-```text
-Import Dataset
-      │
-      ▼
-Create Relational Database
-      │
-      ▼
-Execute SQL Queries
-      │
-      ▼
-Perform JOIN Operations
-      │
-      ▼
-Validate Referential Integrity
-      │
-      ▼
-Export JOIN Results to CSV
-      │
-      ▼
-Clean Data Using Python
-      │
-      ▼
-Detect Outliers
-      │
-      ▼
-Generate Reports and Visualizations
-```
+\`\`\`text Import Dataset       │       ▼ Create Relational Database    
+  │       ▼ Execute SQL Queries       │       ▼ Perform JOIN Operations
+      │       ▼ Validate Referential Integrity       │       ▼ Export
+JOIN Results to CSV       │       ▼ Clean Data Using Python       │    
+  ▼ Detect Outliers       │       ▼ Generate Reports and Visualizations
+\`\`\`
 
----
+**---**
 
-# Database Schema
+**\# Database Schema**
 
-The project uses a relational database named **smartcommerce_analytics** to store and manage the Olist Brazilian E-Commerce dataset.
+The project uses a relational database named
+**\*\*smartcommerce_analytics\*\*** to store and manage the Olist
+Brazilian E-Commerce dataset.
 
-## Tables
+**\## Tables**
 
-| Table | Description |
-|--------|-------------|
-| customers | Stores customer information |
-| orders | Stores order details |
-| products | Stores product information |
-| order_items | Stores products associated with each order |
-| payments | Stores payment information |
-| reviews | Stores customer reviews |
+\| Table \| Description \| \|--------\|-------------\| \| customers \|
+Stores customer information \| \| orders \| Stores order details \| \|
+products \| Stores product information \| \| order_items \| Stores
+products associated with each order \| \| payments \| Stores payment
+information \| \| reviews \| Stores customer reviews \|
 
----
+**---**
 
-## Primary Keys
+**\## Primary Keys**
 
-| Table | Primary Key |
-|--------|-------------|
-| customers | customer_id |
-| orders | order_id |
-| products | product_id |
-| order_items | (order_id, order_item_id) |
-| payments | (order_id, payment_sequential) |
-| reviews | review_id |
+\| Table \| Primary Key \| \|--------\|-------------\| \| customers \|
+customer_id \| \| orders \| order_id \| \| products \| product_id \| \|
+order_items \| (order_id, order_item_id) \| \| payments \| (order_id,
+payment_sequential) \| \| reviews \| review_id \|
 
----
+**---**
 
-## Foreign Keys
+**\## Foreign Keys**
 
-| Child Table | Foreign Key | References |
-|-------------|-------------|------------|
-| orders | customer_id | customers(customer_id) |
-| order_items | order_id | orders(order_id) |
-| order_items | product_id | products(product_id) |
-| payments | order_id | orders(order_id) |
-| reviews | order_id | orders(order_id) |
+\| Child Table \| Foreign Key \| References \|
+\|-------------\|-------------\|------------\| \| orders \| customer_id
+\| customers(customer_id) \| \| order_items \| order_id \|
+orders(order_id) \| \| order_items \| product_id \| products(product_id)
+\| \| payments \| order_id \| orders(order_id) \| \| reviews \| order_id
+\| orders(order_id) \|
 
----
+**---**
 
-## Entity Relationships
+**\## Entity Relationships**
 
-- One customer can place multiple orders.
-- One order can contain multiple order items.
-- One product can appear in multiple orders.
-- One order can have one or more payment records.
-- One order can have one customer review.
+\- One customer can place multiple orders. - One order can contain
+multiple order items. - One product can appear in multiple orders. - One
+order can have one or more payment records. - One order can have one
+customer review.
 
----
+**---**
 
-# Task 1 – Relational Database Setup
+**\# Task 1 -- Relational Database Setup**
 
-## Objective
+**\## Objective**
 
-Create a relational database with Primary Key and Foreign Key relationships.
+Create a relational database with Primary Key and Foreign Key
+relationships.
 
-## Implementation
+**\## Implementation**
 
-- Created the `smartcommerce_analytics` database.
-- Imported the Olist Brazilian E-Commerce dataset into MySQL/MariaDB.
-- Defined Primary Key constraints for all tables.
-- Established Foreign Key relationships between related tables.
+\- Created the \`smartcommerce_analytics\` database. - Imported the
+Olist Brazilian E-Commerce dataset into MySQL/MariaDB. - Defined Primary
+Key constraints for all tables. - Established Foreign Key relationships
+between related tables.
 
-## Files Used
+**\## Files Used**
 
-```text
-database/
-├── 01_schema.sql
-└── 02_import_data.sql
-```
+\`\`\`text database/ ├── 01_schema.sql └── 02_import_data.sql \`\`\`
 
-## Result
+**\## Result**
 
-Relational database created successfully with valid Primary Key and Foreign Key relationships.
+Relational database created successfully with valid Primary Key and
+Foreign Key relationships.
 
----
+**---**
 
-# Task 2 – SQL Data Extraction
+**\# Task 2 -- SQL Data Extraction**
 
-## Objective
+**\## Objective**
 
 Extract data using the required SQL query techniques.
 
-## SQL Queries Implemented
+**\## SQL Queries Implemented**
 
-- WHERE ... IN
-- WHERE ... NOT IN
-- BETWEEN
-- ORDER BY (Ascending & Descending)
-- LIKE
-- NOT EXISTS
+\- WHERE ... IN - WHERE ... NOT IN - BETWEEN - ORDER BY (Ascending &
+Descending) - LIKE - NOT EXISTS
 
-## File Used
+**\## File Used**
 
-```text
-sql/03_basic_queries.sql
-```
+\`\`\`text sql/03_basic_queries.sql \`\`\`
 
-## Result
+**\## Result**
 
 Successfully implemented all six required SQL query types.
 
----
+**---**
 
-# Task 3 – GROUP BY & HAVING
+**\# Task 3 -- GROUP BY & HAVING**
 
-## Objective
+**\## Objective**
 
 Perform grouped analysis using aggregate functions.
 
-## SQL Clauses Used
+**\## SQL Clauses Used**
 
-- GROUP BY
-- HAVING
+\- GROUP BY - HAVING
 
-## Aggregate Functions Used
+**\## Aggregate Functions Used**
 
-- COUNT()
-- AVG()
-- SUM()
+\- COUNT() - AVG() - SUM()
 
-## File Used
+**\## File Used**
 
-```text
-sql/04_groupby_having.sql
-```
+\`\`\`text sql/04_groupby_having.sql \`\`\`
 
-## Result
+**\## Result**
 
-Successfully performed grouped analysis using aggregate functions and HAVING.
+Successfully performed grouped analysis using aggregate functions and
+HAVING.
 
----
+**---**
 
-# Task 4 – JOIN Operations
+**\# Task 4 -- JOIN Operations**
 
-## Objective
+**\## Objective**
 
 Retrieve related data using INNER JOIN and LEFT JOIN.
 
-## JOIN Types
+**\## JOIN Types**
 
-- INNER JOIN
-- LEFT JOIN
+\- INNER JOIN - LEFT JOIN
 
-## File Used
+**\## File Used**
 
-```text
-sql/05_joins.sql
-```
+\`\`\`text sql/05_joins.sql \`\`\`
 
-## JOIN Justification
+**\## JOIN Justification**
 
-**INNER JOIN**
+**\*\*INNER JOIN\*\***
 
 Returns only records with matching values in both tables.
 
-**LEFT JOIN**
+**\*\*LEFT JOIN\*\***
 
-The `orders` table is placed on the left side to retain every order, including records without matching values in the joined table. This ensures complete order information is preserved before exporting the dataset.
+The \`orders\` table is placed on the left side to retain every order,
+including records without matching values in the joined table. This
+ensures complete order information is preserved before exporting the
+dataset.
 
-## Result
+**\## Result**
 
 Successfully implemented both JOIN operations.
 
----
+**---**
 
-# Task 5 – Referential Integrity Validation
+**\# Task 5 -- Referential Integrity Validation**
 
-## Objective
+**\## Objective**
 
 Validate table relationships before analysis.
 
-## Validation Performed
+**\## Validation Performed**
 
-- COUNT(DISTINCT)
-- Grouped Child Count
-- Orphan Record Check
+\- COUNT(DISTINCT) - Grouped Child Count - Orphan Record Check
 
-## File Used
+**\## File Used**
 
-```text
-sql/06_integrity_checks.sql
-```
+\`\`\`text sql/06_integrity_checks.sql \`\`\`
 
-## Referential Integrity Result
+**\## Referential Integrity Result**
 
-**Relationship Verified**
+**\*\*Relationship Verified\*\***
 
-- Parent Table: `orders`
-- Child Table: `order_items`
-- Relationship Type: One-to-Many (1:N)
+\- Parent Table: \`orders\` - Child Table: \`order_items\` -
+Relationship Type: One-to-Many (1:N)
 
-**Validation Summary**
+**\*\*Validation Summary\*\***
 
-- COUNT(DISTINCT) validation completed successfully.
-- Parent-child relationship verified using grouped child-count analysis.
-- Orphan record check completed successfully.
-- No orphan records were found.
+\- COUNT(DISTINCT) validation completed successfully. - Parent-child
+relationship verified using grouped child-count analysis. - Orphan
+record check completed successfully. - No orphan records were found.
 
----
+**---**
 
-# Task 6 – Export JOIN Result to CSV
+**\# Task 6 -- Export JOIN Result to CSV**
 
-## Objective
+**\## Objective**
 
 Export the JOIN result for Python processing.
 
-## File Used
+**\## File Used**
 
-```text
-python/export_csv.py
-```
+\`\`\`text python/export_csv.py \`\`\`
 
-## Output
+**\## Output**
 
-```text
-output/reports/orders_customers_join.csv
-```
+\`\`\`text output/reports/orders_customers_join.csv \`\`\`
 
-## Export Summary
+**\## Export Summary**
 
-| Metric | Value |
-|---------|------:|
-| Rows Exported | 99,441 |
-| Columns Exported | 6 |
+\| Metric \| Value \| \|---------\|------:\| \| Rows Exported \| 99,441
+\| \| Columns Exported \| 6 \|
 
-## Result
+**\## Result**
 
 Successfully exported the JOIN result to CSV for further processing.
 
----
+**---**
 
-# Task 7 – Data Cleaning
+**\# Task 7 -- Data Cleaning**
 
-## Objective
+**\## Objective**
 
 Clean the exported CSV using Python (Pandas).
 
-## Operations Performed
+**\## Operations Performed**
 
-- Missing Value Count
-- Missing Value Percentage
-- Duplicate Detection
-- Duplicate Removal
-- Missing Value Imputation
+\- Missing Value Count - Missing Value Percentage - Duplicate
+Detection - Duplicate Removal - Missing Value Imputation
 
-## File Used
+**\## File Used**
 
-```text
-python/data_cleaning.py
-```
+\`\`\`text python/data_cleaning.py \`\`\`
 
-## Missing Value Summary
+**\## Missing Value Summary**
 
-| Column | Missing Values | Percentage |
-|---------|---------------:|-----------:|
-| customer_id | 0 | 0.0% |
-| customer_city | 0 | 0.0% |
-| customer_state | 0 | 0.0% |
-| order_id | 0 | 0.0% |
-| order_status | 0 | 0.0% |
-| order_purchase_timestamp | 0 | 0.0% |
+\| Column \| Missing Values \| Percentage \|
+\|---------\|---------------:\|-----------:\| \| customer_id \| 0 \|
+0.0% \| \| customer_city \| 0 \| 0.0% \| \| customer_state \| 0 \| 0.0%
+\| \| order_id \| 0 \| 0.0% \| \| order_status \| 0 \| 0.0% \| \|
+order_purchase_timestamp \| 0 \| 0.0% \|
 
-## Imputation Strategy
+**\## Imputation Strategy**
 
-- Numeric Columns → Median
-- Categorical Columns → Mode
+\- Numeric Columns → Median - Categorical Columns → Mode
 
-Median was selected because it is more robust to outliers than the mean. Mode would be used for categorical columns if missing values were present.
+Median was selected because it is more robust to outliers than the mean.
+Mode would be used for categorical columns if missing values were
+present.
 
-Since the exported dataset contained no missing values, no imputation was required.
+Since the exported dataset contained no missing values, no imputation
+was required.
 
-## Duplicate Summary
+**\## Duplicate Summary**
 
-| Metric | Value |
-|---------|------:|
-| Rows Before Cleaning | 99,441 |
-| Rows After Cleaning | 99,441 |
-| Duplicate Rows Removed | 0 |
+\| Metric \| Value \| \|---------\|------:\| \| Rows Before Cleaning \|
+99,441 \| \| Rows After Cleaning \| 99,441 \| \| Duplicate Rows Removed
+\| 0 \|
 
-## Outputs
+**\## Outputs**
 
-```text
-data/cleaned/cleaned_orders.csv
+\`\`\`text data/cleaned/cleaned_orders.csv
 
-output/reports/data_cleaning_report.txt
-```
+output/reports/data_cleaning_report.txt \`\`\`
 
-## Result
+**\## Result**
 
-Successfully cleaned the exported dataset and generated the cleaning report.
+Successfully cleaned the exported dataset and generated the cleaning
+report.
 
----
+**---**
 
-# Task 8 – Outlier Analysis
+**\# Task 8 -- Outlier Analysis**
 
-## Objective
+**\## Objective**
 
 Identify outliers using both statistical methods.
 
-## Continuous Numeric Filtering Rule
+**\## Continuous Numeric Filtering Rule**
 
-A continuous numeric measure is any numeric column representing measurable values.
+A continuous numeric measure is any numeric column representing
+measurable values.
 
 The following columns were excluded:
 
-- Primary Key columns
-- Foreign Key columns
-- Date columns
-- Text columns
-- Binary columns
-- Columns with zero or near-zero variance
+\- Primary Key columns - Foreign Key columns - Date columns - Text
+columns - Binary columns - Columns with zero or near-zero variance
 
 Continuous numeric columns analysed:
 
-- price
-- freight_value
+\- price - freight_value
 
-## Methods Used
+**\## Methods Used**
 
-- Interquartile Range (IQR)
-- Z-score
+\- Interquartile Range (IQR) - Z-score
 
-## File Used
+**\## File Used**
 
-```text
-python/outlier_analysis.py
-```
+\`\`\`text python/outlier_analysis.py \`\`\`
 
-## Analysis Note
+**\## Analysis Note**
 
-Outlier analysis was performed directly on the MySQL database because the continuous numeric columns (`price` and `freight_value`) required for statistical analysis are not present in the exported CSV used for Task 7.
+Outlier analysis was performed directly on the MySQL database because
+the continuous numeric columns (\`price\` and \`freight_value\`)
+required for statistical analysis are not present in the exported CSV
+used for Task 7.
 
-Rows Analysed: **112,650**
+Rows Analysed: **\*\*112,650\*\***
 
-## Outlier Summary
+**\## Outlier Summary**
 
-| Column | IQR Method | Z-score Method |
-|---------|-----------:|---------------:|
-| price | 8,427 | 1,966 |
-| freight_value | 12,134 | 2,041 |
+\| Column \| IQR Method \| Z-score Method \|
+\|---------\|-----------:\|---------------:\| \| price \| 8,427 \| 1,966
+\| \| freight_value \| 12,134 \| 2,041 \|
 
-## Method Comparison
+**\## Method Comparison**
 
-The IQR method detected more outliers because it is more robust for skewed distributions. The Z-score method detected fewer outliers because it assumes an approximately normal distribution.
+The two methods disagree for both measures. IQR detected more outliers
+because it is less sensitive to distributional assumptions and is
+generally more robust for skewed data, while Z-score relies on the mean
+and standard deviation and is most appropriate for approximately normal
+distributions.
 
-## Output
+**\## Output**
 
-```text
-output/reports/outlier_analysis_report.txt
-```
+\`\`\`text output/reports/outlier_analysis_report.txt \`\`\`
 
-## Result
+**\## Result**
 
-Successfully completed outlier analysis using both IQR and Z-score methods.
+Successfully completed outlier analysis using both IQR and Z-score
+methods.
 
----
+**---**
 
-# Additional Visualizations
+**\# Additional Visualizations**
 
 The project also generates exploratory visualizations using Matplotlib.
 
-| Visualization | Description |
-|---------------|-------------|
-| monthly_orders.png | Monthly order trend |
-| orders_by_year.png | Year-wise order distribution |
-| orders_by_state.png | Orders by state |
-| top10_cities.png | Top 10 cities by order count |
-| order_status_distribution.png | Order status distribution |
-| top_states_pie.png | State-wise order share |
+\| Visualization \| Description \| \|---------------\|-------------\| \|
+monthly_orders.png \| Monthly order trend \| \| orders_by_year.png \|
+Year-wise order distribution \| \| orders_by_state.png \| Orders by
+state \| \| top10_cities.png \| Top 10 cities by order count \| \|
+order_status_distribution.png \| Order status distribution \| \|
+top_states_pie.png \| State-wise order share \|
 
-## Location
+**\## Location**
 
-```text
-images/plots/
-```
+\`\`\`text images/plots/ \`\`\`
 
----
+**---**
 
-# Project Outputs
+**\# Project Outputs**
 
-```text
-output/reports/
-├── orders_customers_join.csv
-├── data_cleaning_report.txt
-├── outlier_analysis_report.txt
-└── visualization_report.txt
+\`\`\`text output/reports/ ├── orders_customers_join.csv ├──
+data_cleaning_report.txt └── outlier_analysis_report.txt
 
-data/cleaned/
-└── cleaned_orders.csv
+data/cleaned/ └── cleaned_orders.csv
 
-images/plots/
-├── monthly_orders.png
-├── orders_by_year.png
-├── orders_by_state.png
-├── top10_cities.png
-├── order_status_distribution.png
-└── top_states_pie.png
-```
+images/plots/ ├── monthly_orders.png ├── orders_by_year.png ├──
+orders_by_state.png ├── top10_cities.png ├──
+order_status_distribution.png └── top_states_pie.png \`\`\`
 
+**\# How to Run**
 
-# How to Run
+**\## 1. Clone the Repository**
 
-## 1. Clone the Repository
+\`\`\`bash git clone
+https://github.com/iameshureddy/Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit.git
+cd Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit \`\`\`
 
-```bash
-git clone https://github.com/iameshureddy/Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit.git
-cd Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
-```
+**\## 2. Configure Database**
 
-## 2. Configure Database
+\- Install MySQL or MariaDB. - Create the \`smartcommerce_analytics\`
+database. - Update the database credentials in \`python/config.py\`.
 
-- Install MySQL or MariaDB.
-- Create the `smartcommerce_analytics` database.
-- Update the database credentials in `python/config.py`.
-
-## 3. Create Database and Import Data
+**\## 3. Create Database and Import Data**
 
 Run:
 
-```text
-database/
-├── 01_schema.sql
-└── 02_import_data.sql
-```
+\`\`\`text database/ ├── 01_schema.sql └── 02_import_data.sql \`\`\`
 
-## 4. Execute SQL Tasks
+**\## 4. Execute SQL Tasks**
 
 Run the SQL files in order:
 
-```text
-sql/
-├── 03_basic_queries.sql
-├── 04_groupby_having.sql
-├── 05_joins.sql
-└── 06_integrity_checks.sql
-```
+\`\`\`text sql/ ├── 03_basic_queries.sql ├── 04_groupby_having.sql ├──
+05_joins.sql └── 06_integrity_checks.sql \`\`\`
 
-## 5. Export the JOIN Result
+**\## 5. Export the JOIN Result**
 
-```bash
-python python/export_csv.py
-```
+\`\`\`bash python python/export_csv.py \`\`\`
 
-## 6. Clean the Exported CSV
+**\## 6. Clean the Exported CSV**
 
-```bash
-python python/data_cleaning.py
-```
+\`\`\`bash python python/data_cleaning.py \`\`\`
 
-## 7. Perform Outlier Analysis
+**\## 7. Perform Outlier Analysis**
 
-```bash
-python python/outlier_analysis.py
-```
+\`\`\`bash python python/outlier_analysis.py \`\`\`
 
-## 8. Generate Visualizations
+**\## 8. Generate Visualizations**
 
-```bash
-python python/generate_visualizations.py
-```
+\`\`\`bash python python/generate_visualizations.py \`\`\`
 
-# Conclusion
+**\# Conclusion**
 
-This project successfully demonstrates the complete workflow of SQL-based data extraction, referential integrity validation, CSV export, data cleaning, and statistical outlier analysis using the Olist Brazilian E-Commerce dataset.
+This project successfully demonstrates the complete workflow of
+SQL-based data extraction, referential integrity validation, CSV export,
+data cleaning, and statistical outlier analysis using the Olist
+Brazilian E-Commerce dataset.
 
-All required SQL queries, JOIN operations, integrity checks, Python data cleaning tasks, and outlier detection methods were implemented successfully. The generated reports and visualizations provide additional insights into the dataset and support further analysis.
+All required SQL queries, JOIN operations, integrity checks, CSV export,
+Python data cleaning tasks, and outlier detection methods were
+implemented and executed successfully. The validated outputs include
+99,441 exported customer-order rows, zero missing values and zero
+duplicate rows after cleaning, and IQR/Z-score outlier results for
+`price` and `freight_value`.
