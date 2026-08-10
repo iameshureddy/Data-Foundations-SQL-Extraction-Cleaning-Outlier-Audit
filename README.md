@@ -169,7 +169,7 @@ customers (1) ─────── orders (1)
 The relationship is:
 
 ```text
-One Customer → Many Orders
+One Customer → One Order in this dataset
 ```
 
 The foreign-key relationship is:
