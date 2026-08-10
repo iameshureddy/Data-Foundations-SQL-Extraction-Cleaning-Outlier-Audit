@@ -932,35 +932,39 @@ python python/generate\_visualizations.py
 
 **# 20A. Part 1 Acceptance-Criteria Checklist
 
-| Acceptance criterion | Evidence in project | Status |
-|---|---|:---:|
-| Relational database with primary/foreign-key relationships | `database/01_schema.sql` | ✅ |
-| Six required SQL query types | `sql/03_basic_queries.sql` | ✅ |
-| `GROUP BY` with aggregate functions | `sql/04_groupby_having.sql` | ✅ |
-| `HAVING` filtering after aggregation | `sql/04_groupby_having.sql` | ✅ |
-| `INNER JOIN` | `sql/05_joins.sql` | ✅ |
-| `LEFT JOIN` | `sql/05_joins.sql` | ✅ |
-| JOIN purpose/choice documented | `sql/05_joins.sql` and README | ✅ |
-| `COUNT(DISTINCT)` integrity check | `sql/06_integrity_checks.sql` | ✅ |
-| Grouped child-count integrity check | `sql/06_integrity_checks.sql` | ✅ |
-| Orphan-record integrity check | `sql/06_integrity_checks.sql` | ✅ |
-| JOIN result exported to CSV | `output/reports/orders_customers_join.csv` | ✅ |
-| CSV loaded with Pandas | `python/data_cleaning.py` | ✅ |
-| Missing-value counts and percentages | `output/reports/data_cleaning_report.txt` | ✅ |
-| Explicit missing-value treatment | `python/data_cleaning.py` | ✅ |
-| Missing values after cleaning = 0 | Cleaning report | ✅ |
-| Duplicate count before/after cleaning | Cleaning report | ✅ |
-| Continuous numeric measure filtering | `python/outlier_analysis.py` | ✅ |
-| IQR outlier detection | Outlier report | ✅ |
-| Z-score outlier detection | Outlier report | ✅ |
-| IQR bounds documented | Outlier report | ✅ |
-| Z-score threshold documented | Outlier report | ✅ |
-| Results for each selected measure | `price`, `freight_value` | ✅ |
-| IQR vs Z-score comparison | Outlier report | ✅ |
-| Explanation of method differences | Outlier report and README | ✅ |
-| README documents database, workflow, outputs, and run steps | `README.md` | ✅ |
+The following table maps the Part 1 requirements to the corresponding files,
+reports, and outputs in this repository.
 
-The checklist maps each Part 1 requirement to a file or report in the repository so that the work can be checked directly.
+| Acceptance criterion | Evidence in project | Status |
+|---|---|---|
+| Relational database with primary and foreign-key relationships | `database/01_schema.sql` | Completed |
+| Six required SQL query types | `sql/03_basic_queries.sql` | Completed |
+| `GROUP BY` with aggregate functions | `sql/04_groupby_having.sql` | Completed |
+| `HAVING` filtering after aggregation | `sql/04_groupby_having.sql` | Completed |
+| `INNER JOIN` | `sql/05_joins.sql` | Completed |
+| `LEFT JOIN` | `sql/05_joins.sql` | Completed |
+| JOIN purpose and choice documented | `sql/05_joins.sql` and README | Completed |
+| `COUNT(DISTINCT)` integrity check | `sql/06_integrity_checks.sql` | Completed |
+| Grouped child-count integrity check | `sql/06_integrity_checks.sql` | Completed |
+| Orphan-record integrity check | `sql/06_integrity_checks.sql` | Completed |
+| JOIN result exported to CSV | `output/reports/orders_customers_join.csv` | Completed |
+| CSV loaded using Pandas | `python/data_cleaning.py` | Completed |
+| Missing-value counts and percentages | `output/reports/data_cleaning_report.txt` | Completed |
+| Explicit missing-value treatment strategy | `python/data_cleaning.py` | Completed |
+| Missing values after cleaning | Cleaning report | 0 |
+| Duplicate count before and after cleaning | Cleaning report | Completed |
+| Continuous numeric measure filtering | `python/outlier_analysis.py` | Completed |
+| IQR outlier detection | Outlier analysis report | Completed |
+| Z-score outlier detection | Outlier analysis report | Completed |
+| IQR bounds documented | Outlier analysis report | Completed |
+| Z-score threshold documented | Outlier analysis report | Completed |
+| Results for every selected measure | `price`, `freight_value` | Completed |
+| IQR versus Z-score comparison | Outlier analysis report | Completed |
+| Explanation of method differences | README and outlier report | Completed |
+| README documents schema and workflow | `README.md` | Completed |
+
+The checklist is included as a quick reference. The SQL files, Python scripts,
+and generated reports contain the detailed implementation and results.
 
 ---
 
