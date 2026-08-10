@@ -1,79 +1,82 @@
 # Data Foundations: SQL Extraction, Cleaning & Outlier Audit
 
-**Capstone:** Part 1  
-**Course:** Data Analytics with Gen & Agentic AI  
-**Student:** Bhuvaneswari Yennapusala  
-**Organization:** Masai School  
-**Database:** MySQL running through XAMPP / phpMyAdmin  
-**Dataset:** Olist Brazilian E-Commerce Public Dataset
+**Capstone:** Part 1
+**Course:** Data Analytics with Gen & Agentic AI
+**Student:** Bhuvaneswari Yennapusala
+**Database:** MySQL through XAMPP / phpMyAdmin
+**Dataset:** Olist Brazilian E-Commerce Dataset
 
 ---
 
 ## 1. Project Overview
 
-This project implements the complete **Part 1 – Data Foundations: SQL Extraction, Cleaning & Outlier Audit** workflow.
+This project covers **Part 1 – Data Foundations: SQL Extraction, Cleaning & Outlier Audit**.
 
-The project uses a relational MySQL database created from the Olist Brazilian E-Commerce dataset. SQL is used for data extraction, filtering, aggregation, JOIN operations, and referential-integrity validation. The required JOIN result is exported to CSV and cleaned using Python/Pandas. Continuous numeric business measures are then audited for outliers using both the **IQR** and **Z-score** methods.
+The project starts with the Olist Brazilian E-Commerce dataset and loads the data into a relational MySQL database. SQL is then used for filtering, aggregation, JOIN operations, and referential-integrity checks. A customer-order JOIN result is exported to CSV and processed with Python and Pandas. The final stage performs outlier analysis on continuous numeric business measures using both IQR and Z-score methods.
 
-### Main objectives
+### Main work completed
 
-- Build a two-table-or-more relational database with real primary-key/foreign-key relationships.
-- Demonstrate the six required SQL query techniques.
-- Perform `GROUP BY` + `HAVING` analysis using multiple aggregate functions.
-- Demonstrate both `INNER JOIN` and `LEFT JOIN` with a clear join justification.
-- Validate referential integrity using all three required checks.
-- Export a JOIN result to CSV.
-- Clean the exported CSV using Pandas.
-- Report missing-value counts and percentages.
-- Apply an explicit and justified imputation strategy.
-- Detect and remove duplicate rows.
-- Audit continuous numeric business measures using IQR and Z-score.
-- Compare the two outlier methods and explain why their results differ.
-- Preserve reproducible reports and visual evidence in the repository.
+- Relational database creation with primary and foreign keys
+- SQL filtering using six required query types
+- `GROUP BY` and `HAVING` analysis
+- `INNER JOIN` and `LEFT JOIN`
+- Referential-integrity validation
+- JOIN result export to CSV
+- Missing-value and duplicate analysis
+- Data cleaning using Pandas
+- IQR-based outlier detection
+- Z-score-based outlier detection
+- Comparison of the two outlier methods
+- Reports and visualizations
 
 ---
 
 ## 2. Dataset
 
-### Olist Brazilian E-Commerce Public Dataset
+### Olist Brazilian E-Commerce Dataset
 
-The project uses the public Olist Brazilian E-Commerce dataset.
+The project uses the Olist Brazilian E-Commerce dataset, which contains relational e-commerce information.
 
-The relational schema contains:
+The database includes the following tables:
 
-| Table | Purpose |
+| Table | Description |
 |---|---|
 | `customers` | Customer information |
 | `orders` | Order information |
 | `products` | Product information |
-| `order_items` | Products contained in orders |
+| `order_items` | Items belonging to orders |
 | `payments` | Payment information |
 | `reviews` | Customer review information |
 
-The Part 1 workflow primarily uses `customers`, `orders`, `payments`, and `order_items`.
+The main Part 1 analysis uses:
+
+- `customers`
+- `orders`
+- `payments`
+- `order_items`
 
 ---
 
-## 3. Technology Stack
+## 3. Technology Used
 
 | Technology | Purpose |
 |---|---|
 | MySQL | Relational database |
-| XAMPP | Local MySQL server environment |
-| phpMyAdmin | Database creation, import, query execution and result inspection |
-| SQL | Extraction, aggregation, JOINs and integrity checks |
-| Python | Data cleaning and outlier analysis |
-| Pandas | CSV loading, missing-value analysis and duplicate handling |
+| XAMPP | Local MySQL server |
+| phpMyAdmin | Database management and SQL execution |
+| SQL | Data extraction and validation |
+| Python | Cleaning and statistical analysis |
+| Pandas | Data processing |
 | NumPy | Numerical processing |
-| SQLAlchemy | Python–MySQL connectivity |
+| SQLAlchemy | Python-MySQL connection |
 | PyMySQL | MySQL driver |
-| Matplotlib | Exploratory visualizations |
-| SciPy | Statistical-analysis dependency |
-| Git/GitHub | Version control and submission |
+| Matplotlib | Visualizations |
+| Git | Version control |
+| GitHub | Project repository |
 
 ---
 
-# 4. Repository Structure
+## 4. Project Structure
 
 ```text
 Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit/
@@ -130,7 +133,9 @@ Database name:
 smartcommerce_analytics
 ```
 
-The schema uses **InnoDB**, explicit primary keys, and foreign-key constraints.
+The database is created and managed locally using **XAMPP MySQL and phpMyAdmin**.
+
+The schema uses primary keys and foreign-key constraints.
 
 ## Primary Keys
 
@@ -139,266 +144,355 @@ The schema uses **InnoDB**, explicit primary keys, and foreign-key constraints.
 | `customers` | `customer_id` |
 | `orders` | `order_id` |
 | `products` | `product_id` |
-| `order_items` | `(order_id, order_item_id)` |
-| `payments` | `(order_id, payment_sequential)` |
+| `order_items` | `order_id`, `order_item_id` |
+| `payments` | `order_id`, `payment_sequential` |
 | `reviews` | `review_id` |
 
 ## Foreign Keys
 
-| Child table | Foreign key | Parent |
+| Child table | Foreign key | Parent table |
 |---|---|---|
-| `orders` | `customer_id` | `customers(customer_id)` |
-| `order_items` | `order_id` | `orders(order_id)` |
-| `order_items` | `product_id` | `products(product_id)` |
-| `payments` | `order_id` | `orders(order_id)` |
-| `reviews` | `order_id` | `orders(order_id)` |
+| `orders` | `customer_id` | `customers.customer_id` |
+| `order_items` | `order_id` | `orders.order_id` |
+| `order_items` | `product_id` | `products.product_id` |
+| `payments` | `order_id` | `orders.order_id` |
+| `reviews` | `order_id` | `orders.order_id` |
 
-The schema explicitly defines `FOREIGN KEY` constraints with `ON UPDATE CASCADE` and `ON DELETE RESTRICT`.
-
-### Relationship overview
+## Main Relationship Used in Part 1
 
 ```text
 customers (1) ───────< orders (M)
-orders    (1) ───────< order_items (M)
-products  (1) ───────< order_items (M)
-orders    (1) ───────< payments (M)
-orders    (1) ───────< reviews (M)
 ```
 
-**Important data note:** the schema supports the `customers → orders` 1:M relationship, but in this particular Olist `customer_id` extraction each customer record is associated with one order. Therefore, the Task 5 grouped validation query returned no customer with more than one order. The README reports the observed result rather than claiming a multi-order result that was not present.
+The relationship is:
+
+```text
+One Customer → Many Orders
+```
+
+with:
+
+```text
+orders.customer_id
+        ↓
+customers.customer_id
+```
+
+The database schema enforces the relationship through a foreign-key constraint.
 
 ---
 
-# 6. Part 1 Task-by-Task Implementation
+# 6. Task 1 – Relational Database Setup
 
-## Task 1 – Relational Database Setup
-
-### Requirement
-
-Create a relational database with:
-
-- at least two related tables
-- explicit primary key
-- explicit foreign key
-- a real enforced relationship in the schema
-
-### Implementation
-
-Files:
+### Files
 
 ```text
 database/01_schema.sql
 database/02_import_data.sql
 ```
 
-The schema creates:
+`01_schema.sql` creates the database tables and their relationships.
+
+`02_import_data.sql` is used to load the dataset.
+
+The schema contains multiple related tables and explicitly defines primary and foreign keys.
+
+### Main relationship
 
 ```text
-smartcommerce_analytics
+customers.customer_id
+          ↓
+orders.customer_id
 ```
 
-and defines six tables with primary and foreign keys.
-
-The tables use the InnoDB storage engine, and foreign keys are explicitly declared.
-
-### Result
-
-**PASS – relational schema created with explicit PK/FK constraints.**
+This gives the database a real relational structure instead of treating each dataset as an independent file.
 
 ---
 
-# 7. Task 2 – Six Required SQL Query Types
+# 7. Task 2 – Basic SQL Queries
 
-File:
+### File
 
 ```text
 sql/03_basic_queries.sql
 ```
 
-The file contains all six required techniques.
+The file contains the six required SQL query types.
 
-| Query type | Implementation |
-|---|---|
-| `WHERE ... IN` | Finds delivered/shipped orders |
-| `WHERE ... NOT IN` | Filters products outside selected categories |
-| `BETWEEN` | Filters orders by purchase-date range |
-| `ORDER BY` | Sorts using two columns with DESC/ASC directions |
-| Subquery | `NOT EXISTS` identifies customers without orders |
-| `LIKE` | Performs partial text matching using `%paulo%` |
+## 7.1 WHERE ... IN
 
-### Query 1 – IN
+Find delivered or shipped orders:
 
 ```sql
-WHERE order_status IN ('delivered','shipped')
+SELECT
+    order_id,
+    customer_id,
+    order_status
+FROM orders
+WHERE order_status IN ('delivered','shipped');
 ```
 
-### Query 2 – NOT IN
+## 7.2 WHERE ... NOT IN
+
+The project uses `NOT IN` to exclude selected product categories:
 
 ```sql
-WHERE product_category_name NOT IN (...)
+SELECT
+    product_id,
+    product_category_name
+FROM products
+WHERE product_category_name NOT IN
+(
+    'bed_bath_table',
+    'health_beauty',
+    'sports_leisure'
+);
 ```
 
-### Query 3 – BETWEEN
+## 7.3 BETWEEN
+
+Find orders purchased during the required date range:
 
 ```sql
+SELECT
+    order_id,
+    customer_id,
+    order_purchase_timestamp
+FROM orders
 WHERE order_purchase_timestamp
-BETWEEN '2018-01-01' AND '2018-12-31'
+BETWEEN '2018-01-01 00:00:00'
+AND '2018-12-31 23:59:59';
 ```
 
-### Query 4 – ORDER BY
+## 7.4 ORDER BY
+
+Sort by two columns:
 
 ```sql
-ORDER BY price DESC,
-         freight_value ASC
+SELECT
+    order_id,
+    product_id,
+    price,
+    freight_value
+FROM order_items
+ORDER BY
+    price DESC,
+    freight_value ASC;
 ```
 
-This satisfies the two-column sorting requirement with both ascending and descending directions.
+This demonstrates:
 
-### Query 5 – Subquery
+```text
+price         → DESC
+freight_value → ASC
+```
+
+## 7.5 NOT EXISTS
+
+Find customers for whom no order exists:
 
 ```sql
-WHERE NOT EXISTS (
+SELECT
+    c.customer_id,
+    c.customer_city,
+    c.customer_state
+FROM customers c
+WHERE NOT EXISTS
+(
     SELECT 1
     FROM orders o
     WHERE o.customer_id = c.customer_id
-)
+);
 ```
 
-### Query 6 – LIKE
+## 7.6 LIKE
+
+Find customers whose city contains `paulo`:
 
 ```sql
-WHERE customer_city LIKE '%paulo%'
+SELECT
+    customer_id,
+    customer_city,
+    customer_state
+FROM customers
+WHERE customer_city LIKE '%paulo%';
 ```
-
-### Result
-
-**PASS – all six required SQL query types are present in one SQL file.**
 
 ---
 
-# 8. Task 3 – GROUP BY + HAVING
+# 8. Task 3 – GROUP BY and HAVING
 
-File:
+### File
 
 ```text
 sql/04_groupby_having.sql
 ```
 
-The query groups payment records by payment type.
+The project groups payment information by payment type and calculates multiple aggregate values.
 
-It uses all three required aggregate functions:
+The query uses:
 
-```sql
-COUNT(*)
-SUM(payment_value)
-AVG(payment_value)
+```text
+COUNT()
+SUM()
+AVG()
+GROUP BY
+HAVING
+ORDER BY
 ```
 
-and filters groups using:
+Example:
+
+```sql
+SELECT
+    p.payment_type,
+    COUNT(*) AS total_transactions,
+    SUM(p.payment_value) AS total_sales,
+    AVG(p.payment_value) AS average_payment
+FROM payments p
+GROUP BY p.payment_type
+HAVING SUM(p.payment_value) > 100000
+ORDER BY total_sales DESC;
+```
+
+### Why `HAVING` is used
+
+`WHERE` filters individual rows before grouping.
+
+`HAVING` filters the groups after aggregation.
+
+Here:
 
 ```sql
 HAVING SUM(p.payment_value) > 100000
 ```
 
-It also orders the resulting groups by total sales.
-
-### Result columns
-
-```text
-payment_type
-total_transactions
-total_sales
-average_payment
-```
-
-### Result
-
-**PASS – GROUP BY + HAVING is implemented with multiple aggregate functions.**
+keeps only payment-type groups whose total value is above the selected threshold.
 
 ---
 
-# 9. Task 4 – INNER JOIN and LEFT JOIN
+# 9. Task 4 – JOIN Operations
 
-File:
+### File
 
 ```text
 sql/05_joins.sql
 ```
 
-Tables:
+This file demonstrates both:
+
+```text
+INNER JOIN
+LEFT JOIN
+```
+
+between:
 
 ```text
 customers
 orders
 ```
 
-## INNER JOIN
+The relationship used is:
 
-The INNER JOIN returns only records where `customer_id` exists in both tables.
+```text
+orders.customer_id
+        ↓
+customers.customer_id
+```
 
-Purpose:
-
-- retrieve customers who have matching orders
-- combine customer information with order information
+## 9.1 INNER JOIN
 
 ```sql
+SELECT
+    c.customer_id,
+    c.customer_city,
+    c.customer_state,
+    o.order_id,
+    o.order_status
 FROM customers AS c
 INNER JOIN orders AS o
-ON c.customer_id = o.customer_id
+    ON c.customer_id = o.customer_id
+ORDER BY
+    o.order_id ASC;
 ```
 
-## LEFT JOIN
+### Why INNER JOIN?
 
-The LEFT JOIN keeps every customer from the left-hand `customers` table.
+The INNER JOIN is used when only customers with matching orders are required.
 
-Purpose:
+Records without a matching `customer_id` in the other table are not included.
 
-- preserve all customer records
-- identify customers without matching orders through NULL order columns
+---
+
+## 9.2 LEFT JOIN
 
 ```sql
+SELECT
+    c.customer_id,
+    c.customer_city,
+    c.customer_state,
+    o.order_id,
+    o.order_status
 FROM customers AS c
 LEFT JOIN orders AS o
-ON c.customer_id = o.customer_id
+    ON c.customer_id = o.customer_id
+ORDER BY
+    c.customer_state ASC,
+    c.customer_city ASC;
 ```
 
-### Join justification
+### Why LEFT JOIN?
 
-**INNER JOIN:** used when only matched customer-order records are required.
+The `customers` table is placed on the left because the purpose is to retain **every customer**, including customers who do not have a matching order.
 
-**LEFT JOIN:** used when every customer must be retained, including customers with no matching order.
+When a customer has no matching order, the order-related columns can contain `NULL`.
 
-### Result
-
-**PASS – both required JOIN types are implemented and justified.**
+This makes the LEFT JOIN useful for checking whether customer records without orders exist.
 
 ---
 
 # 10. Task 5 – Referential Integrity Validation
 
-File:
+### File
 
 ```text
 sql/06_integrity_checks.sql
 ```
 
-The validation uses all three required checks.
-
-## Check 1 – COUNT(DISTINCT)
-
-```sql
-COUNT(DISTINCT c.customer_id)
-```
-
-This verifies how many distinct customers have matching orders.
-
-### Observed result
+The main relationship checked in this task is:
 
 ```text
-unique_customers_with_orders = 99,441
+Parent Table : customers
+Child Table  : orders
+
+Relationship : One-to-Many (1:M)
+
+Foreign Key:
+orders.customer_id → customers.customer_id
 ```
 
-## Check 2 – Grouped child count
+Three checks are performed.
+
+## 10.1 Matching customer count
+
+```sql
+SELECT
+    COUNT(DISTINCT c.customer_id) AS unique_customers
+FROM customers AS c
+INNER JOIN orders AS o
+    ON c.customer_id = o.customer_id;
+```
+
+This counts the distinct customers that have matching orders.
+
+Observed result:
+
+```text
+99,441
+```
+
+## 10.2 Customers with more than one order
 
 ```sql
 SELECT
@@ -407,19 +501,20 @@ SELECT
 FROM orders AS o
 GROUP BY o.customer_id
 HAVING COUNT(o.order_id) > 1
+ORDER BY total_orders DESC;
 ```
 
-This checks whether any parent customer has more than one matching child order.
+This checks whether any customer has multiple order records under the loaded `customer_id` relationship.
 
-### Observed result
+Observed result:
 
 ```text
 0 rows
 ```
 
-Therefore, no customer in this loaded Olist extraction has more than one order under the `customer_id` key.
+The query is still useful as a validation of the expected one-to-many relationship even though this particular extracted dataset did not return customers with more than one order.
 
-## Check 3 – Orphan check
+## 10.3 Orphan-order check
 
 ```sql
 SELECT
@@ -427,43 +522,37 @@ SELECT
     o.customer_id
 FROM orders AS o
 LEFT JOIN customers AS c
-ON o.customer_id = c.customer_id
-WHERE c.customer_id IS NULL
+    ON o.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
 ```
 
-### Observed result
+Observed result:
 
 ```text
 0 rows
 ```
 
-Therefore, no orphan orders were found.
+This means no order was found whose `customer_id` was missing from the `customers` table.
 
-### Task 5 conclusion
+### Task 5 result
 
 ```text
-Distinct customers with matching orders : 99,441
-Customers with >1 order                 : 0
-Orphan orders                            : 0
+Customers with matching orders : 99,441
+Customers with >1 order        : 0 rows
+Orphan orders                  : 0 rows
 ```
-
-The foreign-key relationship is defined in the database schema, and the SQL validation confirms that the loaded data contains no orphan orders.
-
-### Result
-
-**PASS – all three required referential-integrity queries are implemented and executed successfully.**
 
 ---
 
 # 11. Task 6 – Export JOIN Result to CSV
 
-File:
+### File
 
 ```text
 python/export_csv.py
 ```
 
-The Task 4 customer-order JOIN result is exported using Pandas.
+The Task 4 customer-order JOIN is exported from MySQL to CSV.
 
 ### Output
 
@@ -471,7 +560,7 @@ The Task 4 customer-order JOIN result is exported using Pandas.
 output/reports/orders_customers_join.csv
 ```
 
-### Exported columns
+### Exported fields
 
 ```text
 customer_id
@@ -482,49 +571,50 @@ order_status
 order_purchase_timestamp
 ```
 
-### Export result
+### Observed output
 
-| Metric | Result |
-|---|---:|
-| Rows | 99,441 |
-| Columns | 6 |
-| Output format | CSV |
+```text
+Rows    : 99,441
+Columns : 6
+```
 
-### Result
-
-**PASS – JOIN result exported successfully and used as the input to Task 7.**
+The CSV is then used as the input for Task 7.
 
 ---
 
-# 12. Task 7 – Data Cleaning with Pandas
+# 12. Task 7 – Data Cleaning
 
-File:
+### File
 
 ```text
 python/data_cleaning.py
 ```
 
-Input:
+### Input
 
 ```text
 output/reports/orders_customers_join.csv
 ```
 
-Output:
+### Cleaned output
 
 ```text
 data/cleaned/cleaned_orders.csv
 ```
 
-Report:
+### Report
 
 ```text
 output/reports/data_cleaning_report.txt
 ```
 
-## Missing-value audit
+## Missing-value analysis
 
-| Column | Missing values | Percentage |
+The script calculates both the number and percentage of missing values for every column.
+
+Observed result:
+
+| Column | Missing | Percentage |
 |---|---:|---:|
 | `customer_id` | 0 | 0.0% |
 | `customer_city` | 0 | 0.0% |
@@ -533,79 +623,100 @@ output/reports/data_cleaning_report.txt
 | `order_status` | 0 | 0.0% |
 | `order_purchase_timestamp` | 0 | 0.0% |
 
-### Imputation strategy
+Total missing values:
 
-The Python script explicitly uses:
+```text
+0
+```
 
-- **Categorical/object columns → mode**
-- **Numeric columns → median**
+## Missing-value treatment
 
-Median is preferred over mean because it is less sensitive to extreme values.
+The code uses:
 
-For categorical data, mode preserves the most common category.
+```text
+Categorical/object columns → Mode
+Numeric columns            → Median
+```
 
-### Important result
+The strategy is defined even though the actual dataset did not contain missing values.
 
-The exported dataset contained **zero missing values**, so the imputation logic was checked but no actual imputation was necessary.
+Median is less affected by extreme values than the mean, while mode is suitable for categorical values.
 
-## Duplicate audit
+## Duplicate check
 
-| Metric | Result |
-|---|---:|
-| Rows before cleaning | 99,441 |
-| Rows after cleaning | 99,441 |
-| Duplicate rows removed | 0 |
-| Missing values after cleaning | 0 |
-| Final columns | 6 |
+Observed result:
 
-### Result
+```text
+Rows before cleaning : 99,441
+Rows after cleaning  : 99,441
+Duplicates removed   : 0
+```
 
-**PASS – missing-value counts and percentages, explicit imputation logic, duplicate detection, and before/after counts are documented.**
+### Final cleaned dataset
+
+```text
+Rows           : 99,441
+Columns        : 6
+Missing values : 0
+Duplicates     : 0
+```
 
 ---
 
 # 13. Task 8 – Outlier Audit
 
-File:
+### File
 
 ```text
 python/outlier_analysis.py
 ```
 
-Report:
+### Report
 
 ```text
 output/reports/outlier_analysis_report.txt
 ```
 
-## Continuous numeric filtering rule
+The analysis uses continuous numeric business measures from `order_items`.
 
-Only continuous numeric business measures are analysed.
-
-The script excludes identifier/key columns, binary/flag-like columns, and zero/near-zero variance columns from the numeric selection process.
-
-The selected business measures are:
+Selected measures:
 
 ```text
 price
 freight_value
 ```
 
-The query intentionally loads only these continuous numeric measures from `order_items`, so the selected dataframe contains no ID/date/text columns requiring exclusion.
-
-### Rows analysed
+Rows analysed:
 
 ```text
 112,650
 ```
 
----
+## Continuous numeric filtering
 
-## IQR Method
+The analysis is designed to exclude:
 
-Formula:
+- identifier/key columns
+- binary/flag columns
+- zero or near-zero variance columns
+
+The final selected continuous business measures are:
 
 ```text
+price
+freight_value
+```
+
+---
+
+## 13.1 IQR Method
+
+The project uses:
+
+```text
+Q1 = 25th percentile
+Q3 = 75th percentile
+
 IQR = Q3 - Q1
 
 Lower Fence = Q1 - 1.5 × IQR
@@ -621,7 +732,7 @@ Upper Fence = Q3 + 1.5 × IQR
 | IQR | 95.000000 |
 | Lower Fence | -102.600000 |
 | Upper Fence | 277.400000 |
-| IQR Outliers | 8,427 |
+| Outliers | 8,427 |
 
 ### Freight value
 
@@ -632,81 +743,78 @@ Upper Fence = Q3 + 1.5 × IQR
 | IQR | 8.070000 |
 | Lower Fence | 0.975000 |
 | Upper Fence | 33.255000 |
-| IQR Outliers | 12,134 |
+| Outliers | 12,134 |
 
 ---
 
-## Z-score Method
+# 14. Z-score Method
 
-Formula:
+The Z-score is calculated as:
 
 ```text
-Z = (x - mean) / standard deviation
+Z = (value - mean) / standard deviation
 ```
 
-An observation is classified as an outlier when:
+The project uses:
 
 ```text
 |Z| > 3
 ```
 
-### Price
+as the outlier threshold.
+
+## Price
 
 | Metric | Value |
 |---|---:|
 | Mean | 120.653739 |
 | Standard deviation | 183.633928 |
-| Threshold | 3 |
-| Z-score outliers | 1,966 |
+| Z threshold | 3 |
+| Outliers | 1,966 |
 
-### Freight value
+## Freight value
 
 | Metric | Value |
 |---|---:|
 | Mean | 19.990320 |
 | Standard deviation | 15.806405 |
-| Threshold | 3 |
-| Z-score outliers | 2,041 |
+| Z threshold | 3 |
+| Outliers | 2,041 |
 
 ---
 
-## IQR vs Z-score comparison
+# 15. IQR and Z-score Comparison
 
 | Measure | IQR outliers | Z-score outliers | Difference | Result |
 |---|---:|---:|---:|---|
 | `price` | 8,427 | 1,966 | 6,461 | Disagree |
 | `freight_value` | 12,134 | 2,041 | 10,093 | Disagree |
 
-### Why do the methods differ?
+### Why are the results different?
 
-IQR is less dependent on the mean and standard deviation and is generally more robust for skewed distributions and extreme values.
+The IQR method is based on quartiles and is generally more robust when data are skewed or contain extreme values.
 
-Z-score uses the mean and standard deviation and is most appropriate when the distribution is approximately normal.
+The Z-score method depends on the mean and standard deviation and is more suitable when the data are approximately normally distributed.
 
-Therefore, the two methods can classify different observations as outliers, particularly when the data are skewed or contain extreme values.
-
-### Result
-
-**PASS – both required outlier methods are applied to every selected continuous numeric measure, the thresholds are documented, counts are reported, and the methods are compared with an explanation.**
+Because the two methods use different definitions of an outlier, they can identify different observations.
 
 ---
 
-# 14. Generated Reports
+# 16. Reports and Outputs
 
-The repository contains the following evidence files:
-
-| File | Purpose |
+| Output | Purpose |
 |---|---|
-| `output/reports/orders_customers_join.csv` | Task 6 JOIN export |
-| `output/reports/data_cleaning_report.txt` | Task 7 cleaning evidence |
-| `output/reports/outlier_analysis_report.txt` | Task 8 outlier evidence |
-| `output/reports/visualization_report.txt` | Visualization summary |
+| `orders_customers_join.csv` | Task 6 JOIN export |
+| `data_cleaning_report.txt` | Task 7 cleaning results |
+| `outlier_analysis_report.txt` | Task 8 outlier results |
+| `cleaned_orders.csv` | Cleaned Task 6 dataset |
+| `visualization_report.txt` | Visualization information |
 
 ---
 
-# 15. Visual Evidence
+# 17. Visualizations
 
-The project includes generated Matplotlib visualizations.
+The project also contains visualizations generated from the order data.
 
 ### Monthly Orders
 
@@ -732,11 +840,11 @@ The project includes generated Matplotlib visualizations.
 
 ![Top States](images/top_states_pie.png)
 
-> These plots provide visual evidence of the exploratory outputs generated from the project. Screenshots of phpMyAdmin/terminal execution are not required by the Part 1 acceptance criteria because the repository already contains the executable SQL/Python files and generated result reports.
+These visualizations are included as supporting evidence for the exploratory analysis.
 
 ---
 
-# 16. How to Run the Project
+# 18. How to Run the Project
 
 ## Step 1 – Clone the repository
 
@@ -747,66 +855,45 @@ cd Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
 
 ## Step 2 – Start XAMPP
 
-Open **XAMPP Control Panel** and start:
+Open XAMPP Control Panel and start:
 
 ```text
 MySQL
 ```
 
-Open:
+Open phpMyAdmin:
 
 ```text
-http://localhost/phpmyadmin
+http://localhost/phpmyadmin/
 ```
 
-The Python scripts use:
+The Python scripts use the following local configuration:
 
 ```text
 Host     : localhost
 Port     : 3306
 User     : root
-Password : empty by default in this project
+Password : empty
 Database : smartcommerce_analytics
 ```
 
-If the local MySQL password is different, update the database configuration before running the Python scripts.
+If your XAMPP MySQL installation has a password, update the Python database configuration before running the scripts.
 
----
-
-## Step 3 – Install Python dependencies
-
-Recommended:
+## Step 3 – Install Python packages
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-The repository requirements include:
+## Step 4 – Create the database
 
-```text
-pandas
-numpy
-SQLAlchemy
-PyMySQL
-matplotlib
-scipy
-```
-
----
-
-## Step 4 – Create the database schema
-
-Open phpMyAdmin → SQL and execute:
+Open phpMyAdmin and execute:
 
 ```text
 database/01_schema.sql
 ```
 
-This creates the database, tables, primary keys and foreign keys.
-
----
-
-## Step 5 – Import the dataset
+## Step 5 – Import the data
 
 Execute:
 
@@ -814,57 +901,18 @@ Execute:
 database/02_import_data.sql
 ```
 
-This loads the Olist data into the relational database.
+## Step 6 – Run the SQL tasks
 
----
-
-## Step 6 – Run Task 2
-
-Execute:
+Run these files in phpMyAdmin:
 
 ```text
 sql/03_basic_queries.sql
-```
-
----
-
-## Step 7 – Run Task 3
-
-Execute:
-
-```text
 sql/04_groupby_having.sql
-```
-
----
-
-## Step 8 – Run Task 4
-
-Execute:
-
-```text
 sql/05_joins.sql
-```
-
----
-
-## Step 9 – Run Task 5
-
-Execute:
-
-```text
 sql/06_integrity_checks.sql
 ```
 
-Confirm:
-
-- `COUNT(DISTINCT ...)` returns the expected customer count.
-- The grouped child-count query executes successfully.
-- The orphan-record query returns zero rows.
-
----
-
-## Step 10 – Run Task 6
+## Step 7 – Export the JOIN result
 
 From the project root:
 
@@ -872,110 +920,72 @@ From the project root:
 python python/export_csv.py
 ```
 
-Expected output:
-
-```text
-output/reports/orders_customers_join.csv
-```
-
----
-
-## Step 11 – Run Task 7
+## Step 8 – Run data cleaning
 
 ```powershell
 python python/data_cleaning.py
 ```
 
-Expected output:
-
-```text
-data/cleaned/cleaned_orders.csv
-```
-
-and:
-
-```text
-output/reports/data_cleaning_report.txt
-```
-
----
-
-## Step 12 – Run Task 8
+## Step 9 – Run outlier analysis
 
 ```powershell
 python python/outlier_analysis.py
 ```
 
-Expected report:
-
-```text
-output/reports/outlier_analysis_report.txt
-```
-
----
-
-## Step 13 – Generate visualizations
+## Step 10 – Generate visualizations
 
 ```powershell
 python python/generate_visualizations.py
 ```
 
-Generated images are stored in:
-
-```text
-images/
-```
-
 ---
 
-## 17. Part 1 Checklist
+# 19. Part 1 Checklist
 
-The following table summarizes the work completed for Part 1.
-
-| Task | What was completed | File / Output |
+| Task | Work completed | File / Output |
 |---|---|---|
-| Task 1 | Created the relational database with primary and foreign keys | `database/01_schema.sql` |
-| Task 2 | Added the required SQL queries: `IN`, `NOT IN`, `BETWEEN`, `ORDER BY`, subquery, and `LIKE` | `sql/03_basic_queries.sql` |
-| Task 3 | Created a `GROUP BY` and `HAVING` query using `COUNT`, `SUM`, and `AVG` | `sql/04_groupby_having.sql` |
-| Task 4 | Implemented both `INNER JOIN` and `LEFT JOIN` between customers and orders | `sql/05_joins.sql` |
-| Task 5 | Checked customer-order relationships using distinct count, grouped count, and orphan-record checks | `sql/06_integrity_checks.sql` |
-| Task 6 | Exported the customer-order JOIN result to CSV | `output/reports/orders_customers_join.csv` |
-| Task 7 | Loaded the CSV in Pandas, checked missing values, handled duplicates, and saved the cleaned dataset | `python/data_cleaning.py` |
-| Task 8 | Analysed `price` and `freight_value` using IQR and Z-score methods | `python/outlier_analysis.py` |
-| Reports | Generated cleaning and outlier-analysis reports | `output/reports/` |
-| Visualizations | Generated charts for order trends and distributions | `images/` |
-| Documentation | Added setup, execution steps, results, and project details | `README.md` |
+| Task 1 | Created relational database with primary and foreign keys | `database/01_schema.sql` |
+| Task 2 | Added the six required SQL query types | `sql/03_basic_queries.sql` |
+| Task 3 | Used `GROUP BY`, `HAVING`, `COUNT`, `SUM`, and `AVG` | `sql/04_groupby_having.sql` |
+| Task 4 | Added `INNER JOIN` and `LEFT JOIN` with explanations | `sql/05_joins.sql` |
+| Task 5 | Checked matching customers, grouped orders, and orphan orders | `sql/06_integrity_checks.sql` |
+| Task 6 | Exported the customer-order JOIN result | `orders_customers_join.csv` |
+| Task 7 | Checked missing values and duplicates and created a cleaned dataset | `python/data_cleaning.py` |
+| Task 8 | Analysed `price` and `freight_value` using IQR and Z-score | `python/outlier_analysis.py` |
+| Reports | Saved cleaning and outlier results | `output/reports/` |
+| Visualizations | Generated charts from the project data | `images/` |
+| Documentation | Added setup and execution instructions | `README.md` |
 
 ---
 
-# 18. Final Verified Results
+# 20. Final Results
 
-## Task 5
-
-```text
-Unique customers with orders : 99,441
-Customers with >1 order      : 0 rows
-Orphan orders                : 0 rows
-```
-
-## Task 6
+### Database and JOIN
 
 ```text
-Rows exported    : 99,441
-Columns exported: 6
+Database : smartcommerce_analytics
+JOIN rows: 99,441
+JOIN columns: 6
 ```
 
-## Task 7
+### Referential integrity
+
+```text
+Matching customers : 99,441
+Customers with >1 order : 0 rows
+Orphan orders : 0 rows
+```
+
+### Data cleaning
 
 ```text
 Rows before cleaning : 99,441
 Rows after cleaning  : 99,441
 Duplicates removed   : 0
 Missing values       : 0
-Columns              : 6
 ```
 
-## Task 8
+### Outlier analysis
 
 ```text
 price
@@ -989,61 +999,38 @@ freight_value
 
 ---
 
-# 19. Key Learning Outcomes
+# 21. Conclusion
 
-This Part 1 project demonstrates:
+Part 1 provides a complete workflow from relational data storage to data-quality analysis:
 
-- relational database design
-- primary and foreign keys
-- SQL filtering
-- subqueries
-- pattern matching
-- sorting
-- aggregation
-- `GROUP BY` and `HAVING`
-- `INNER JOIN`
-- `LEFT JOIN`
-- referential-integrity validation
-- CSV data export
-- Pandas data cleaning
-- missing-value analysis
-- imputation strategy
-- duplicate detection
-- IQR outlier detection
-- Z-score outlier detection
-- comparison of statistical methods
-- reproducible reporting
-- Git/GitHub-based project delivery
+```text
+Olist Dataset
+      ↓
+MySQL / XAMPP
+      ↓
+SQL Queries
+      ↓
+GROUP BY / HAVING
+      ↓
+INNER JOIN / LEFT JOIN
+      ↓
+Referential Integrity
+      ↓
+CSV Export
+      ↓
+Pandas Cleaning
+      ↓
+IQR / Z-score Outlier Audit
+      ↓
+Reports and Visualizations
+```
+
+The project demonstrates the use of SQL for relational data analysis and Python for data preparation and statistical outlier detection.
 
 ---
 
-# 20. Submission
+# 22. Repository
 
-### Public GitHub Repository
+GitHub repository:
 
 https://github.com/iameshureddy/Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
-
-The repository contains:
-
-- SQL schema and data-import scripts
-- all required SQL query files
-- Python CSV-export script
-- Python data-cleaning script
-- Python outlier-analysis script
-- exported CSV
-- cleaned CSV
-- cleaning report
-- outlier report
-- visualization report
-- generated visualizations
-- this README
-
----
-
-## Final Status
-
-**Part 1 – Data Foundations: SQL Extraction, Cleaning & Outlier Audit**
-
-**Implementation status: COMPLETE**
-
-The repository documents the required SQL extraction, relational JOINs, referential-integrity checks, CSV export, Pandas cleaning workflow, and IQR/Z-score outlier audit together with reproducible outputs and visual evidence.
