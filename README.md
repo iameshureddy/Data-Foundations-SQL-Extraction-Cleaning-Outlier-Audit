@@ -12,7 +12,7 @@
 
 This project covers **Part 1 – Data Foundations: SQL Extraction, Cleaning & Outlier Audit**.
 
-The project starts with the Olist Brazilian E-Commerce dataset and loads the data into a relational MySQL database. SQL is then used for filtering, aggregation, JOIN operations, and referential-integrity checks. A customer-order JOIN result is exported to CSV and processed with Python and Pandas. The final stage performs outlier analysis on continuous numeric business measures using both IQR and Z-score methods.
+The project starts with the Olist Brazilian E-Commerce Dataset and loads the data into a relational MySQL database. SQL is used for filtering, aggregation, JOIN operations, and referential-integrity checks. A customer-order JOIN result is exported to CSV and processed using Python and Pandas. The final stage performs outlier analysis on continuous numeric business measures using both IQR and Z-score methods.
 
 ### Main work completed
 
@@ -22,11 +22,12 @@ The project starts with the Olist Brazilian E-Commerce dataset and loads the dat
 - `INNER JOIN` and `LEFT JOIN`
 - Referential-integrity validation
 - JOIN result export to CSV
-- Missing-value and duplicate analysis
+- Missing-value analysis
+- Duplicate detection
 - Data cleaning using Pandas
 - IQR-based outlier detection
 - Z-score-based outlier detection
-- Comparison of the two outlier methods
+- Comparison of IQR and Z-score results
 - Reports and visualizations
 
 ---
@@ -35,9 +36,9 @@ The project starts with the Olist Brazilian E-Commerce dataset and loads the dat
 
 ### Olist Brazilian E-Commerce Dataset
 
-The project uses the Olist Brazilian E-Commerce dataset, which contains relational e-commerce information.
+The project uses the Olist Brazilian E-Commerce Dataset.
 
-The database includes the following tables:
+The database contains the following main tables:
 
 | Table | Description |
 |---|---|
@@ -52,8 +53,10 @@ The main Part 1 analysis uses:
 
 - `customers`
 - `orders`
+- `products`
 - `payments`
 - `order_items`
+- `reviews`
 
 ---
 
@@ -65,18 +68,18 @@ The main Part 1 analysis uses:
 | XAMPP | Local MySQL server |
 | phpMyAdmin | Database management and SQL execution |
 | SQL | Data extraction and validation |
-| Python | Cleaning and statistical analysis |
+| Python | Data cleaning and analysis |
 | Pandas | Data processing |
 | NumPy | Numerical processing |
 | SQLAlchemy | Python-MySQL connection |
 | PyMySQL | MySQL driver |
-| Matplotlib | Visualizations |
+| Matplotlib | Data visualization |
 | Git | Version control |
 | GitHub | Project repository |
 
 ---
 
-## 4. Project Structure
+# 4. Project Structure
 
 ```text
 Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit/
@@ -135,7 +138,7 @@ smartcommerce_analytics
 
 The database is created and managed locally using **XAMPP MySQL and phpMyAdmin**.
 
-The schema uses primary keys and foreign-key constraints.
+The schema uses primary keys and foreign-key relationships.
 
 ## Primary Keys
 
@@ -150,7 +153,7 @@ The schema uses primary keys and foreign-key constraints.
 
 ## Foreign Keys
 
-| Child table | Foreign key | Parent table |
+| Child Table | Foreign Key | Parent Table |
 |---|---|---|
 | `orders` | `customer_id` | `customers.customer_id` |
 | `order_items` | `order_id` | `orders.order_id` |
@@ -170,15 +173,13 @@ The relationship is:
 One Customer → Many Orders
 ```
 
-with:
+The foreign-key relationship is:
 
 ```text
 orders.customer_id
         ↓
 customers.customer_id
 ```
-
-The database schema enforces the relationship through a foreign-key constraint.
 
 ---
 
@@ -191,11 +192,11 @@ database/01_schema.sql
 database/02_import_data.sql
 ```
 
-`01_schema.sql` creates the database tables and their relationships.
+`01_schema.sql` creates the relational database structure.
 
-`02_import_data.sql` is used to load the dataset.
+`02_import_data.sql` is used to import the dataset into the database.
 
-The schema contains multiple related tables and explicitly defines primary and foreign keys.
+The schema contains multiple related tables and explicitly defines primary keys and foreign keys.
 
 ### Main relationship
 
@@ -205,7 +206,7 @@ customers.customer_id
 orders.customer_id
 ```
 
-This gives the database a real relational structure instead of treating each dataset as an independent file.
+This provides the relational structure required for the project.
 
 ---
 
@@ -221,7 +222,7 @@ The file contains the six required SQL query types.
 
 ## 7.1 WHERE ... IN
 
-Find delivered or shipped orders:
+Find orders whose status is either delivered or shipped.
 
 ```sql
 SELECT
@@ -232,9 +233,11 @@ FROM orders
 WHERE order_status IN ('delivered','shipped');
 ```
 
+---
+
 ## 7.2 WHERE ... NOT IN
 
-The project uses `NOT IN` to exclude selected product categories:
+The project uses `NOT IN` to exclude selected product categories.
 
 ```sql
 SELECT
@@ -249,9 +252,11 @@ WHERE product_category_name NOT IN
 );
 ```
 
+---
+
 ## 7.3 BETWEEN
 
-Find orders purchased during the required date range:
+Find orders purchased during 2018.
 
 ```sql
 SELECT
@@ -264,9 +269,11 @@ BETWEEN '2018-01-01 00:00:00'
 AND '2018-12-31 23:59:59';
 ```
 
+---
+
 ## 7.4 ORDER BY
 
-Sort by two columns:
+Sort the result using two columns with different sorting directions.
 
 ```sql
 SELECT
@@ -280,16 +287,18 @@ ORDER BY
     freight_value ASC;
 ```
 
-This demonstrates:
+Sorting:
 
 ```text
 price         → DESC
 freight_value → ASC
 ```
 
+---
+
 ## 7.5 NOT EXISTS
 
-Find customers for whom no order exists:
+Find customers for whom no order exists.
 
 ```sql
 SELECT
@@ -305,9 +314,11 @@ WHERE NOT EXISTS
 );
 ```
 
+---
+
 ## 7.6 LIKE
 
-Find customers whose city contains `paulo`:
+Find customers living in cities containing `paulo`.
 
 ```sql
 SELECT
@@ -328,7 +339,7 @@ WHERE customer_city LIKE '%paulo%';
 sql/04_groupby_having.sql
 ```
 
-The project groups payment information by payment type and calculates multiple aggregate values.
+The project groups payment information by payment type and calculates aggregate values.
 
 The query uses:
 
@@ -355,19 +366,19 @@ HAVING SUM(p.payment_value) > 100000
 ORDER BY total_sales DESC;
 ```
 
-### Why `HAVING` is used
+### Why HAVING is used
 
 `WHERE` filters individual rows before grouping.
 
-`HAVING` filters the groups after aggregation.
+`HAVING` filters groups after aggregation.
 
-Here:
+In this project:
 
 ```sql
 HAVING SUM(p.payment_value) > 100000
 ```
 
-keeps only payment-type groups whose total value is above the selected threshold.
+filters payment-type groups according to their total payment value.
 
 ---
 
@@ -401,6 +412,8 @@ orders.customer_id
 customers.customer_id
 ```
 
+---
+
 ## 9.1 INNER JOIN
 
 ```sql
@@ -421,7 +434,9 @@ ORDER BY
 
 The INNER JOIN is used when only customers with matching orders are required.
 
-Records without a matching `customer_id` in the other table are not included.
+Only records with a matching `customer_id` in both tables are returned.
+
+Customers without a matching order are not included in the INNER JOIN result.
 
 ---
 
@@ -444,11 +459,11 @@ ORDER BY
 
 ### Why LEFT JOIN?
 
-The `customers` table is placed on the left because the purpose is to retain **every customer**, including customers who do not have a matching order.
+The `customers` table is placed on the **left side** because the purpose is to retain every customer record.
 
-When a customer has no matching order, the order-related columns can contain `NULL`.
+If a customer does not have a matching order, the customer is still included and the order-related columns can contain `NULL`.
 
-This makes the LEFT JOIN useful for checking whether customer records without orders exist.
+This makes the LEFT JOIN useful for checking customers who may not have orders.
 
 ---
 
@@ -460,13 +475,13 @@ This makes the LEFT JOIN useful for checking whether customer records without or
 sql/06_integrity_checks.sql
 ```
 
-The main relationship checked in this task is:
+The relationship checked in this task is:
 
 ```text
 Parent Table : customers
 Child Table  : orders
 
-Relationship : One-to-Many (1:M)
+Relationship : One Customer → Many Orders (1:M)
 
 Foreign Key:
 orders.customer_id → customers.customer_id
@@ -474,7 +489,9 @@ orders.customer_id → customers.customer_id
 
 Three checks are performed.
 
-## 10.1 Matching customer count
+---
+
+## 10.1 Matching Customer Count
 
 ```sql
 SELECT
@@ -484,7 +501,7 @@ INNER JOIN orders AS o
     ON c.customer_id = o.customer_id;
 ```
 
-This counts the distinct customers that have matching orders.
+This checks the number of distinct customers having matching orders.
 
 Observed result:
 
@@ -492,7 +509,9 @@ Observed result:
 99,441
 ```
 
-## 10.2 Customers with more than one order
+---
+
+## 10.2 Customers with More Than One Order
 
 ```sql
 SELECT
@@ -504,7 +523,7 @@ HAVING COUNT(o.order_id) > 1
 ORDER BY total_orders DESC;
 ```
 
-This checks whether any customer has multiple order records under the loaded `customer_id` relationship.
+This checks whether a customer has more than one order under the loaded customer-order relationship.
 
 Observed result:
 
@@ -512,9 +531,11 @@ Observed result:
 0 rows
 ```
 
-The query is still useful as a validation of the expected one-to-many relationship even though this particular extracted dataset did not return customers with more than one order.
+This means that the loaded dataset did not return any customer with more than one order for this particular grouping.
 
-## 10.3 Orphan-order check
+---
+
+## 10.3 Orphan Order Check
 
 ```sql
 SELECT
@@ -532,7 +553,7 @@ Observed result:
 0 rows
 ```
 
-This means no order was found whose `customer_id` was missing from the `customers` table.
+No orphan orders were found.
 
 ### Task 5 result
 
@@ -552,7 +573,7 @@ Orphan orders                  : 0 rows
 python/export_csv.py
 ```
 
-The Task 4 customer-order JOIN is exported from MySQL to CSV.
+The customer-order JOIN result from Task 4 is exported from MySQL into a CSV file.
 
 ### Output
 
@@ -560,7 +581,7 @@ The Task 4 customer-order JOIN is exported from MySQL to CSV.
 output/reports/orders_customers_join.csv
 ```
 
-### Exported fields
+### Exported columns
 
 ```text
 customer_id
@@ -571,14 +592,14 @@ order_status
 order_purchase_timestamp
 ```
 
-### Observed output
+### Observed result
 
 ```text
 Rows    : 99,441
 Columns : 6
 ```
 
-The CSV is then used as the input for Task 7.
+The exported CSV is used as the input for Task 7.
 
 ---
 
@@ -596,7 +617,7 @@ python/data_cleaning.py
 output/reports/orders_customers_join.csv
 ```
 
-### Cleaned output
+### Output
 
 ```text
 data/cleaned/cleaned_orders.csv
@@ -608,13 +629,15 @@ data/cleaned/cleaned_orders.csv
 output/reports/data_cleaning_report.txt
 ```
 
-## Missing-value analysis
+---
 
-The script calculates both the number and percentage of missing values for every column.
+## 12.1 Missing Values
+
+The script checks both the number and percentage of missing values.
 
 Observed result:
 
-| Column | Missing | Percentage |
+| Column | Missing Values | Percentage |
 |---|---:|---:|
 | `customer_id` | 0 | 0.0% |
 | `customer_city` | 0 | 0.0% |
@@ -629,27 +652,31 @@ Total missing values:
 0
 ```
 
-## Missing-value treatment
+---
 
-The code uses:
+## 12.2 Missing-Value Treatment
+
+The Python script contains an explicit treatment strategy:
 
 ```text
 Categorical/object columns → Mode
 Numeric columns            → Median
 ```
 
-The strategy is defined even though the actual dataset did not contain missing values.
+The actual dataset contained no missing values, so no rows required imputation during this run.
 
-Median is less affected by extreme values than the mean, while mode is suitable for categorical values.
+The strategy is still included in the code so that the cleaning process can handle missing values if they are present.
 
-## Duplicate check
+---
+
+## 12.3 Duplicate Check
 
 Observed result:
 
 ```text
-Rows before cleaning : 99,441
-Rows after cleaning  : 99,441
-Duplicates removed   : 0
+Rows before cleaning  : 99,441
+Rows after cleaning   : 99,441
+Duplicate rows removed: 0
 ```
 
 ### Final cleaned dataset
@@ -677,7 +704,7 @@ python/outlier_analysis.py
 output/reports/outlier_analysis_report.txt
 ```
 
-The analysis uses continuous numeric business measures from `order_items`.
+The outlier audit is performed on continuous numeric business measures from `order_items`.
 
 Selected measures:
 
@@ -692,15 +719,19 @@ Rows analysed:
 112,650
 ```
 
-## Continuous numeric filtering
+---
 
-The analysis is designed to exclude:
+## 13.1 Continuous Numeric Filtering
+
+The analysis is designed to work only with meaningful continuous numeric business measures.
+
+The filtering logic excludes:
 
 - identifier/key columns
 - binary/flag columns
 - zero or near-zero variance columns
 
-The final selected continuous business measures are:
+The final selected measures are:
 
 ```text
 price
@@ -709,21 +740,22 @@ freight_value
 
 ---
 
-## 13.1 IQR Method
+# 14. IQR Method
 
-The project uses:
+The project uses the following formula:
 
 ```text
-Q1 = 25th percentile
-Q3 = 75th percentile
-
 IQR = Q3 - Q1
 
 Lower Fence = Q1 - 1.5 × IQR
 Upper Fence = Q3 + 1.5 × IQR
 ```
 
-### Price
+A value below the lower fence or above the upper fence is classified as an outlier.
+
+---
+
+## 14.1 Price
 
 | Metric | Value |
 |---|---:|
@@ -734,7 +766,9 @@ Upper Fence = Q3 + 1.5 × IQR
 | Upper Fence | 277.400000 |
 | Outliers | 8,427 |
 
-### Freight value
+---
+
+## 14.2 Freight Value
 
 | Metric | Value |
 |---|---:|
@@ -747,7 +781,7 @@ Upper Fence = Q3 + 1.5 × IQR
 
 ---
 
-# 14. Z-score Method
+# 15. Z-score Method
 
 The Z-score is calculated as:
 
@@ -763,7 +797,9 @@ The project uses:
 
 as the outlier threshold.
 
-## Price
+---
+
+## 15.1 Price
 
 | Metric | Value |
 |---|---:|
@@ -772,7 +808,9 @@ as the outlier threshold.
 | Z threshold | 3 |
 | Outliers | 1,966 |
 
-## Freight value
+---
+
+## 15.2 Freight Value
 
 | Metric | Value |
 |---|---:|
@@ -783,38 +821,38 @@ as the outlier threshold.
 
 ---
 
-# 15. IQR and Z-score Comparison
+# 16. IQR vs Z-score Comparison
 
-| Measure | IQR outliers | Z-score outliers | Difference | Result |
+| Measure | IQR Outliers | Z-score Outliers | Difference | Result |
 |---|---:|---:|---:|---|
 | `price` | 8,427 | 1,966 | 6,461 | Disagree |
 | `freight_value` | 12,134 | 2,041 | 10,093 | Disagree |
 
 ### Why are the results different?
 
-The IQR method is based on quartiles and is generally more robust when data are skewed or contain extreme values.
+IQR is based on quartiles and is generally more robust to skewed data and extreme values.
 
-The Z-score method depends on the mean and standard deviation and is more suitable when the data are approximately normally distributed.
+Z-score depends on the mean and standard deviation and works better when the data are approximately normally distributed.
 
-Because the two methods use different definitions of an outlier, they can identify different observations.
+Because the two methods use different rules for identifying unusual values, they can produce different outlier counts.
 
 ---
 
-# 16. Reports and Outputs
+# 17. Reports and Outputs
 
-| Output | Purpose |
+| File | Purpose |
 |---|---|
-| `orders_customers_join.csv` | Task 6 JOIN export |
-| `data_cleaning_report.txt` | Task 7 cleaning results |
-| `outlier_analysis_report.txt` | Task 8 outlier results |
-| `cleaned_orders.csv` | Cleaned Task 6 dataset |
-| `visualization_report.txt` | Visualization information |
+| `output/reports/orders_customers_join.csv` | Task 6 JOIN result |
+| `data/cleaned/cleaned_orders.csv` | Task 7 cleaned dataset |
+| `output/reports/data_cleaning_report.txt` | Task 7 results |
+| `output/reports/outlier_analysis_report.txt` | Task 8 results |
+| `output/reports/visualization_report.txt` | Visualization information |
 
 ---
 
-# 17. Visualizations
+# 18. Visualizations
 
-The project also contains visualizations generated from the order data.
+The project includes generated visualizations stored directly inside the `images/` directory.
 
 ### Monthly Orders
 
@@ -840,11 +878,11 @@ The project also contains visualizations generated from the order data.
 
 ![Top States](images/top_states_pie.png)
 
-These visualizations are included as supporting evidence for the exploratory analysis.
+These charts provide supporting visual evidence for the analysis.
 
 ---
 
-# 18. How to Run the Project
+# 19. How to Run the Project
 
 ## Step 1 – Clone the repository
 
@@ -855,7 +893,7 @@ cd Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
 
 ## Step 2 – Start XAMPP
 
-Open XAMPP Control Panel and start:
+Open the XAMPP Control Panel and start:
 
 ```text
 MySQL
@@ -867,7 +905,7 @@ Open phpMyAdmin:
 http://localhost/phpmyadmin/
 ```
 
-The Python scripts use the following local configuration:
+The Python database configuration uses:
 
 ```text
 Host     : localhost
@@ -877,13 +915,17 @@ Password : empty
 Database : smartcommerce_analytics
 ```
 
-If your XAMPP MySQL installation has a password, update the Python database configuration before running the scripts.
+If your local MySQL installation uses a password, update the database configuration in the Python script before running it.
 
-## Step 3 – Install Python packages
+---
+
+## Step 3 – Install Python dependencies
 
 ```bash
 python -m pip install -r requirements.txt
 ```
+
+---
 
 ## Step 4 – Create the database
 
@@ -893,6 +935,8 @@ Open phpMyAdmin and execute:
 database/01_schema.sql
 ```
 
+---
+
 ## Step 5 – Import the data
 
 Execute:
@@ -901,9 +945,11 @@ Execute:
 database/02_import_data.sql
 ```
 
+---
+
 ## Step 6 – Run the SQL tasks
 
-Run these files in phpMyAdmin:
+Execute the following files in phpMyAdmin:
 
 ```text
 sql/03_basic_queries.sql
@@ -911,6 +957,8 @@ sql/04_groupby_having.sql
 sql/05_joins.sql
 sql/06_integrity_checks.sql
 ```
+
+---
 
 ## Step 7 – Export the JOIN result
 
@@ -920,17 +968,23 @@ From the project root:
 python python/export_csv.py
 ```
 
+---
+
 ## Step 8 – Run data cleaning
 
 ```powershell
 python python/data_cleaning.py
 ```
 
+---
+
 ## Step 9 – Run outlier analysis
 
 ```powershell
 python python/outlier_analysis.py
 ```
+
+---
 
 ## Step 10 – Generate visualizations
 
@@ -940,7 +994,7 @@ python python/generate_visualizations.py
 
 ---
 
-# 19. Part 1 Checklist
+# 20. Part 1 Checklist
 
 | Task | Work completed | File / Output |
 |---|---|---|
@@ -958,9 +1012,9 @@ python python/generate_visualizations.py
 
 ---
 
-# 20. Final Results
+# 21. Final Results
 
-### Database and JOIN
+## Database and JOIN
 
 ```text
 Database : smartcommerce_analytics
@@ -968,15 +1022,15 @@ JOIN rows: 99,441
 JOIN columns: 6
 ```
 
-### Referential integrity
+## Referential Integrity
 
 ```text
-Matching customers : 99,441
+Matching customers      : 99,441
 Customers with >1 order : 0 rows
-Orphan orders : 0 rows
+Orphan orders            : 0 rows
 ```
 
-### Data cleaning
+## Data Cleaning
 
 ```text
 Rows before cleaning : 99,441
@@ -985,7 +1039,7 @@ Duplicates removed   : 0
 Missing values       : 0
 ```
 
-### Outlier analysis
+## Outlier Analysis
 
 ```text
 price
@@ -999,9 +1053,9 @@ freight_value
 
 ---
 
-# 21. Conclusion
+# 22. Conclusion
 
-Part 1 provides a complete workflow from relational data storage to data-quality analysis:
+The project follows the Part 1 workflow from relational database creation to data-quality analysis:
 
 ```text
 Olist Dataset
@@ -1018,19 +1072,19 @@ Referential Integrity
       ↓
 CSV Export
       ↓
-Pandas Cleaning
+Pandas Data Cleaning
       ↓
 IQR / Z-score Outlier Audit
       ↓
 Reports and Visualizations
 ```
 
-The project demonstrates the use of SQL for relational data analysis and Python for data preparation and statistical outlier detection.
+The implementation demonstrates SQL-based data extraction and validation together with Python-based data cleaning and statistical outlier analysis.
 
 ---
 
-# 22. Repository
+# 23. Repository
 
-GitHub repository:
+GitHub:
 
 https://github.com/iameshureddy/Data-Foundations-SQL-Extraction-Cleaning-Outlier-Audit
