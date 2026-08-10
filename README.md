@@ -164,8 +164,7 @@ The schema uses primary keys and foreign-key relationships.
 ## Main Relationship Used in Part 1
 
 ```text
-customers (1) ───────< orders (M)
-```
+customers (1) ─────── orders (1)
 
 The relationship is:
 
@@ -381,7 +380,7 @@ Task 4 demonstrates two SQL JOIN operations between the `customers` and `orders`
 The relationship is:
 
 ```text
-customers (1) → orders (M)
+customers (1) → orders (1)
 ```
 
 The tables are joined using:
@@ -436,7 +435,7 @@ Task 5 checks the relational integrity between the `customers` and `orders` tabl
 The relationship is:
 
 ```text
-One Customer → Many Orders (1:M)
+One Customer → One Order in this dataset
 ```
 
 The foreign-key relationship is:
