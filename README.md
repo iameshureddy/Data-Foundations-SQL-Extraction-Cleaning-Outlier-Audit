@@ -1,15 +1,13 @@
 # Data Foundations: SQL Extraction, Cleaning & Outlier Audit
 
-**Capstone:** Part 1  
-**Course:** Data Analytics with Gen & Agentic AI  
-**Student:** Bhuvaneswari Yennapusala  
-**Database:** MySQL through XAMPP / phpMyAdmin  
-**Dataset:** Olist Brazilian E-Commerce Dataset
+**Capstone:** Part 1  
+**Course:** Data Analytics with Gen & Agentic AI  
+**Student:** Bhuvaneswari Yennapusala  
+**Database:** MySQL through XAMPP / phpMyAdmin  
+**Dataset:** Olist Brazilian E-Commerce Dataset  
 
 > **Part 1 Status:** Complete  
 > **Focus:** SQL extraction, relational integrity, Pandas cleaning, and outlier auditing
-
-
 ---
 
 ## 1. Project Overview
